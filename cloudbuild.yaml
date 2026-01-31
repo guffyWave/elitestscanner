@@ -1,13 +1,12 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args:
-      [
+    args: [
         'build',
         '-t',
         'gcr.io/elihealth-test-stripes-gufran/eli-test-scanner-backend',
         '-f',
         'backend/Dockerfile',
-        'backend',
+        '.', # Change 'backend' to '.'
       ]
 
   - name: 'gcr.io/cloud-builders/docker'
