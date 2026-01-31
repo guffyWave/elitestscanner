@@ -45,10 +45,10 @@ export class ImageProcessor {
       }
 
       // Validate format
-      const allowedFormats = ['jpg', 'jpeg', 'png'];
+     // const allowedFormats = ['jpg', 'jpeg', 'png'];
       const format = (dimensions.type || '').toLowerCase();
 
-      if (!allowedFormats.includes(format)) {
+      if (!ALLOWED_FILE_TYPES.includes(format)) {
         throw new InvalidImageFormat();
       }
 

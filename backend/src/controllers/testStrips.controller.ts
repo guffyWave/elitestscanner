@@ -4,7 +4,7 @@ import { ImageProcessor } from '../services/imageProcessor';
 import { QRService } from '../services/qrService';
 //@note todo: encapsulate in business class
 import { insertSubmission } from '../services/testStrips.service';
-import { NoImageUploaded, SomethingWentWrong } from '../utils/errors';
+import { EliHealthError, NoImageUploaded, SomethingWentWrong } from '../utils/errors';
 
 export async function uploadTestStrip(req: Request, res: Response) {
   try {
@@ -54,6 +54,11 @@ export async function uploadTestStrip(req: Request, res: Response) {
     });
   } catch (error: any) {
     console.error('Upload error:', error);
+
+    if (error instanceof EliHealthError) {
+      return res.status(400).json(error);
+    }
+
     return res
       .status(500)
       .json(new SomethingWentWrong(error instanceof Error ? error.message : ' '));

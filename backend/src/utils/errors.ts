@@ -25,7 +25,7 @@ export const ERROR_CODES = {
     INVALID_QR: {
       code: 2001,
       name: 'Invalid QR Code',
-      description: 'The QR code is invalid or corrupted',
+      description: 'The QR code is invalid or corrupted.Make sure it matches ELI-YYYY-XXX format',
     },
     EXPIRED_QR: { code: 2002, name: 'Expired QR Code', description: 'The QR code has expired' },
     NOT_FOUND: {
