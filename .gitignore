@@ -6,6 +6,11 @@ node_modules/
 *.jpeg
 *.png
 
+!backend/tests/assets/qr-expired.png
+!backend/tests/assets/qr-inavalid.png
+!backend/tests/assets/qr-valid.png
+
+
 .Trash*
 .DS_Store
 
