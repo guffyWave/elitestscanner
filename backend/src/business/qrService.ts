@@ -17,6 +17,7 @@ import { logger } from '../utils/logger';
 //Flow: User uploads file → API stores file  → API enqueues job → Redis → Worker process picks job → Worker does heavy processing, stores processed file  → Client polls or uses WebSocket to get status
 //However, for now  doing CPU-heavy QR processing in the request itself
 export class QRService {
+  //todo see any downside of making this static
   static async extractQR(filePath: string): Promise<QRScanResult | null> {
     let qrScanResult: QRScanResult | null = {
       qrCode: '',

@@ -88,7 +88,6 @@ export async function uploadTestStrip(
   }
 }
 
-//@notes  -- pagination
 export async function getAllTestStripSubmissions(req: Request, res: Response) {
   const page = parseInt(req.query.page as string) || 1; // default 1
   const limit = parseInt(req.query.limit as string) || 10; // default 10
