@@ -11,7 +11,11 @@ import {
 } from '../utils/errors';
 import { QRScanResult, ScanValidity } from '../common/types';
 import { ELI_QR_VALIDATION_REFEX, LAST_QR_YEAR_ALLOWED } from '../utils/constants';
+import { logger } from '../utils/logger';
 
+//@note : We should use Worker Queue (BullMQ + Redis) for better scalability in future
+//Flow: User uploads file → API stores file  → API enqueues job → Redis → Worker process picks job → Worker does heavy processing, stores processed file  → Client polls or uses WebSocket to get status
+//However, for now we are keeping it simple and doing CPU-heavy image processing in the request itself, in Express directly.
 export class QRService {
   static async extractQR(filePath: string): Promise<QRScanResult | null> {
     let qrScanResult: QRScanResult | null = {
@@ -51,9 +55,10 @@ export class QRService {
         // throw new InvalidQRCode(); // alternativly throw an error
       }
 
-      // Year expiration logic
+      // Year expiration constarint
+
       const year: number = parseInt(match[1]);
-      if (year < LAST_QR_YEAR_ALLOWED) {
+      if (isNaN(year) || year < LAST_QR_YEAR_ALLOWED) {
         qrScanResult = {
           qrCode: qrText,
           valid: ScanValidity.INVALID,
@@ -71,8 +76,8 @@ export class QRService {
 
       return qrScanResult;
     } catch (error) {
+      logger.error('QR extraction error:', error);
       return qrScanResult;
-
       // Alternatively, rethrow known errors or wrap unknown errors
       // if (error instanceof EliHealthError) {
       //   throw error;

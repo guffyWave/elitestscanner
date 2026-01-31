@@ -73,8 +73,7 @@ export async function uploadTestStrip(
     logger.info('Image processed successfully', uploadTestStripResponse);
     res.json(uploadTestStripResponse);
   } catch (error: any) {
-    console.error('Upload error:', error);
-    logger.info('Upload error:', error);
+    logger.error('Upload error:', error);
 
     if (error instanceof EliHealthError) {
       return res.status(400).json(error);

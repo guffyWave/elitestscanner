@@ -18,18 +18,20 @@ import {
   MAX_THUMBNAIL_WIDTH,
 } from '../utils/constants';
 import { ImageMetadata } from '../common/types';
+import { logger } from '../utils/logger';
 
 //@note : We should use Worker Queue (BullMQ + Redis) for better scalability in future
 //Flow: User uploads file → API stores file  → API enqueues job → Redis → Worker process picks job → Worker does heavy processing, stores processed file  → Client polls or uses WebSocket to get status
 //However, for now we are keeping it simple and do CPU-heavy image processing in the request itself, in Express directly.
 export class ImageProcessor {
   static async processImage(filePath: string): Promise<ImageMetadata> {
+    let imageMetadata: ImageMetadata;
     try {
       if (!fs.existsSync(filePath)) {
         throw new FileNotFound();
       }
 
-      // READ FILE INTO BUFFER
+      //Read the file into buffer
       const buffer = fs.readFileSync(filePath);
 
       // Extract metadata
@@ -59,14 +61,20 @@ export class ImageProcessor {
         .toFormat(IMAGE_FORMAT_JPEG)
         .toFile(thumbnailPath);
 
-      return {
+      imageMetadata = {
         size,
         width: dimensions.width,
         height: dimensions.height,
         format,
         thumbnailPath,
       };
+
+      logger.info('Image processed:', imageMetadata);
+
+      return imageMetadata;
     } catch (error) {
+      logger.error('Image processing error:', error);
+
       if (error instanceof EliHealthError) {
         throw error;
       }
