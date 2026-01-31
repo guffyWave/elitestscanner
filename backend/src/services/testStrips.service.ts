@@ -1,4 +1,8 @@
-import { TestStripSubmissionRecord, TestStripSubmissionResponseModel } from '../common/types';
+import {
+  TestStripSubmissionRecord,
+  TestStripSubmissionResponseModel,
+  TestStripSubmissionsPageResponseModel,
+} from '../common/types';
 import { pool } from '../config/db';
 import { logger } from '../utils/logger';
 import { isValidUUID } from '../utils/utility';
@@ -25,16 +29,35 @@ export async function insertTestStripSubmission(data: TestStripSubmissionRecord)
   return result.rows[0];
 }
 
-export async function getAllTestStripSubmissions(): Promise<
-  TestStripSubmissionResponseModel[] | undefined
-> {
+export async function getAllTestStripSubmissions(
+  page: number,
+  limit: number
+): Promise<TestStripSubmissionsPageResponseModel | undefined> {
   try {
-    const res = await pool.query(`
-    SELECT id, qr_code, status, thumbnail_path, created_at, original_image_path, image_size, image_dimensions, error_message
-    FROM test_strip_submissions
-    ORDER BY created_at DESC
-  `);
-    return res.rows;
+    const offset = (page - 1) * limit;
+
+    const listQuery = `
+      SELECT id, qr_code, status, thumbnail_path, created_at, original_image_path,
+             image_size, image_dimensions, error_message
+      FROM test_strip_submissions
+      ORDER BY created_at DESC
+      LIMIT $1 OFFSET $2
+    `;
+
+    const countQuery = `SELECT COUNT(*)::int AS total FROM test_strip_submissions`;
+
+    const [listResult, countResult] = await Promise.all([
+      pool.query(listQuery, [limit, offset]),
+      pool.query(countQuery),
+    ]);
+
+    return {
+      data: listResult.rows,
+      page,
+      limit,
+      total: countResult.rows[0].total,
+      totalPages: Math.ceil(countResult.rows[0].total / limit),
+    };
   } catch (error) {
     logger.error('DB Error : fetching all test strip submissions:', error);
     return undefined;

@@ -65,3 +65,11 @@ export interface TestStripSubmissionResponseModel {
   error_message: string | null;
   created_at: string;
 }
+
+export interface TestStripSubmissionsPageResponseModel {
+  data: TestStripSubmissionResponseModel[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}

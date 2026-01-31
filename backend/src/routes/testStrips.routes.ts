@@ -20,6 +20,7 @@ router.post(ROUTE_UPLOAD, (req, res) => {
     uploadTestStrip(req, res);
   });
 });
+//localhost:3000/api/test-strips?page=1&limit=10
 router.get(ROUTE_GET_ALL, getAllTestStripSubmissions);
 router.get('/:id', getOneTestStripSubmissionById);
 

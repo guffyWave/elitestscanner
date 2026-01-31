@@ -88,9 +88,21 @@ export async function uploadTestStrip(
   }
 }
 
+//@notes  -- pagination
 export async function getAllTestStripSubmissions(req: Request, res: Response) {
-  const rows = await service.getAllTestStripSubmissions();
-  res.json(rows);
+  const page = parseInt(req.query.page as string) || 1; // default 1
+  const limit = parseInt(req.query.limit as string) || 10; // default 10
+
+  if (page < 1 || limit < 1) {
+    return res.status(400).json({ error: 'page and limit must be positive integers' });
+  }
+
+  const result = await service.getAllTestStripSubmissions(page, limit);
+
+  if (!result) {
+    return res.status(500).json({ error: 'Failed to fetch submissions' });
+  }
+  res.json(result);
 }
 
 export async function getOneTestStripSubmissionById(req: Request, res: Response) {
