@@ -17,7 +17,7 @@ export class ImageProcessor {
       throw new Error('File not found.');
     }
 
-    // READ FILE INTO BUFFER (fixes the TypeScript issue)
+    // READ FILE INTO BUFFER 
     const buffer = fs.readFileSync(filePath);
 
     // Extract metadata
