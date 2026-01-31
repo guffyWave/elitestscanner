@@ -19,6 +19,9 @@ import {
 } from '../utils/constants';
 import { ImageMetadata } from '../common/types';
 
+//@note : We should use Worker Queue (BullMQ + Redis) for better scalability in future
+//Flow: User uploads file → API stores file  → API enqueues job → Redis → Worker process picks job → Worker does heavy processing, stores processed file  → Client polls or uses WebSocket to get status
+//However, for now we are keeping it simple and do CPU-heavy image processing in the request itself, in Express directly.
 export class ImageProcessor {
   static async processImage(filePath: string): Promise<ImageMetadata> {
     try {
@@ -37,15 +40,14 @@ export class ImageProcessor {
         throw new InvalidImageDimensions();
       }
 
-      // Validate format
-      // const allowedFormats = ['jpg', 'jpeg', 'png'];
+      // validate format
       const format = (dimensions.type || '').toLowerCase();
 
       if (!ALLOWED_FILE_TYPES.includes(format)) {
         throw new InvalidImageFormat();
       }
 
-      // Create thumbnail
+      // create thumbnail
       const thumbnailPath = path.join(
         FILE_PATH_UPLOADS,
         FILE_PATH_THUMBNAILS,

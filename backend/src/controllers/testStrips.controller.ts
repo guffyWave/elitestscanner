@@ -13,6 +13,7 @@ import {
   TestStripSubmissionUploadResponse,
 } from '../common/types';
 import { RESPONSE_MESSAGE_FAILED_QR, RESPONSE_MESSAGE_SUCCESS } from '../utils/constants';
+import { logger } from '../utils/logger';
 
 //@todo : check type safety
 
@@ -20,6 +21,8 @@ export async function uploadTestStrip(
   req: Request,
   res: Response<TestStripSubmissionUploadResponse>
 ) {
+  let uploadTestStripResponse: TestStripSubmissionUploadResponse;
+
   try {
     const file = req?.file;
     const filePath = file?.path;
@@ -30,6 +33,8 @@ export async function uploadTestStrip(
     if (!file || !filePath) {
       return res.status(400).json(new NoImageUploaded());
     }
+
+    logger.info('Image upload started - ', req.file?.originalname);
 
     // QR Extraction
     qrScanResult = await QRService.extractQR(filePath);
@@ -48,27 +53,28 @@ export async function uploadTestStrip(
       errorMessage: qrScanResult?.errorMessage || null,
     });
 
-    if (qrScanResult && metaData) {
-      res.json({
-        id: dbRecord?.id,
-        status: qrScanResult?.valid || ScanValidity.INVALID,
-        qrCode: qrScanResult?.qrCode || null,
-        qrCodeValid: qrScanResult?.valid || ScanValidity.INVALID,
-        quality:
-          qrScanResult?.valid === ScanValidity.VALID
-            ? metaData?.width && metaData?.height
-              ? QRScanQuality.GOOD
-              : QRScanQuality.BAD
-            : QRScanQuality.NA,
-        processedAt: dbRecord?.created_at,
-        message:
-          qrScanResult?.valid === ScanValidity.VALID
-            ? RESPONSE_MESSAGE_SUCCESS
-            : qrScanResult?.errorMessage || RESPONSE_MESSAGE_FAILED_QR,
-      });
-    }
+    uploadTestStripResponse = {
+      id: dbRecord?.id,
+      status: qrScanResult?.valid || ScanValidity.INVALID,
+      qrCode: qrScanResult?.qrCode || null,
+      qrCodeValid: qrScanResult?.valid || ScanValidity.INVALID,
+      quality:
+        qrScanResult?.valid === ScanValidity.VALID
+          ? metaData?.width && metaData?.height
+            ? QRScanQuality.GOOD
+            : QRScanQuality.BAD
+          : QRScanQuality.NA,
+      processedAt: dbRecord?.created_at,
+      message:
+        qrScanResult?.valid === ScanValidity.VALID
+          ? RESPONSE_MESSAGE_SUCCESS
+          : qrScanResult?.errorMessage || RESPONSE_MESSAGE_FAILED_QR,
+    };
+    logger.info('Image processed successfully', uploadTestStripResponse);
+    res.json(uploadTestStripResponse);
   } catch (error: any) {
     console.error('Upload error:', error);
+    logger.info('Upload error:', error);
 
     if (error instanceof EliHealthError) {
       return res.status(400).json(error);

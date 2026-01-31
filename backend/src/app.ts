@@ -12,15 +12,20 @@ app.use(express.json());
 app.use('/', healthRoutes);
 app.use('/api/test-strips', testStripsRoutes);
 
-// Serve uploads folder publicly
+// Serving uploads folder publicly from the Node server for development purposes only.
+// In production, ideally CDN - AWS S3 ,Cloudflare R2 , Google Cloud Storage
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 //http://localhost:3000/uploads/1769832544060-191518940.png
 
 //@note : todo deploy of GCP
 
-//@note : put meaningful variable Names
-
-
-/// note - See the app is flowing ,  make diagram of the flow
-
 export default app;
+
+// Folder	Responsibility
+// controllers -	Input/output, validate request, call service
+// services	Business logic (image processing)
+// middleware	file upload, auth, validation
+// utils	helper libs (logger, DB connectors)
+// config	env variables
+// routes	express routing only
+// types	TS models & interfaces

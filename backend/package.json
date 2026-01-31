@@ -20,7 +20,8 @@
     "jsqr": "^1.4.0",
     "multer": "^2.0.2",
     "pg": "^8.18.0",
-    "sharp": "^0.34.5"
+    "sharp": "^0.34.5",
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
@@ -30,6 +31,7 @@
     "@types/multer": "^2.0.0",
     "@types/node": "^25.1.0",
     "@types/pg": "^8.16.0",
+    "@types/winston": "^2.4.4",
     "jest": "^30.2.0",
     "ts-jest": "^29.4.6",
     "ts-node-dev": "^2.0.0",
