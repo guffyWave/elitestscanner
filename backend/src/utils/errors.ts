@@ -48,6 +48,23 @@ export const ERROR_CODES = {
       description: 'An unexpected error occurred, please try again later',
     },
   },
+  RESPONSE: {
+    INVALID_ID: {
+      code: 5001,
+      name: 'Invalid ID',
+      description: 'The provided ID is invalid',
+    },
+    INVALID_UUID: {
+      code: 5003,
+      name: 'Invalid UUID',
+      description: 'The provided UUID is invalid',
+    },
+    NOT_FOUND: {
+      code: 5002,
+      name: 'Not Found',
+      description: 'The requested test strip submission was not found',
+    },
+  },
 } as const;
 
 export class EliHealthError extends Error {
@@ -126,6 +143,13 @@ export class ExpiredQRCode extends EliHealthError {
 export class QRCodeNotFound extends EliHealthError {
   constructor() {
     const { code, name, description } = ERROR_CODES.QR.NOT_FOUND;
+    super(code, name, description);
+  }
+}
+
+export class InternalServerError extends EliHealthError {
+  constructor() {
+    const { code, name, description } = ERROR_CODES.GENERIC.SOMETHING_WENT_WRONG;
     super(code, name, description);
   }
 }

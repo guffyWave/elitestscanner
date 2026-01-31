@@ -2,9 +2,14 @@ import { Request, Response } from 'express';
 import * as service from '../services/testStrips.service';
 import { ImageProcessor } from '../business/imageProcessor';
 import { QRService } from '../business/qrService';
-//@note todo: encapsulate in business class
 import { insertTestStripSubmission } from '../services/testStrips.service';
-import { EliHealthError, NoImageUploaded, SomethingWentWrong } from '../utils/errors';
+import {
+  EliHealthError,
+  ERROR_CODES,
+  InternalServerError,
+  NoImageUploaded,
+  SomethingWentWrong,
+} from '../utils/errors';
 import {
   ImageMetadata,
   QRScanQuality,
@@ -14,8 +19,7 @@ import {
 } from '../common/types';
 import { RESPONSE_MESSAGE_FAILED_QR, RESPONSE_MESSAGE_SUCCESS } from '../utils/constants';
 import { logger } from '../utils/logger';
-
-//@todo : check type safety
+import { isValidUUID } from '../utils/utility';
 
 export async function uploadTestStrip(
   req: Request,
@@ -36,9 +40,8 @@ export async function uploadTestStrip(
 
     logger.info('Image upload started - ', req.file?.originalname);
 
-    // QR Extraction
+    //QR Extraction
     qrScanResult = await QRService.extractQR(filePath);
-    console.log('check qr ---', qrScanResult);
 
     //Image processing
     metaData = await ImageProcessor.processImage(filePath);
@@ -85,15 +88,55 @@ export async function uploadTestStrip(
   }
 }
 
-export async function getAll(req: Request, res: Response) {
+export async function getAllTestStripSubmissions(req: Request, res: Response) {
   const rows = await service.getAllTestStripSubmissions();
   res.json(rows);
 }
 
-export async function getOne(req: Request, res: Response) {
-  const id = Array.isArray(req?.query?.id) ? req?.query?.id[0] : req.query.id || '';
+export async function getOneTestStripSubmissionById(req: Request, res: Response) {
+  const { id } = req.params;
 
-  const row = await service.getTestStripSubmissionById(id as string);
-  if (!row) return res.status(404).json({ error: 'Not found' }); /// todo Object not found error
-  res.json(row);
+  if (!id || typeof id !== 'string') {
+    return res
+      .status(400)
+      .json(
+        new EliHealthError(
+          ERROR_CODES.RESPONSE.INVALID_ID.code,
+          ERROR_CODES.RESPONSE.INVALID_ID.name,
+          ERROR_CODES.RESPONSE.INVALID_ID.description
+        )
+      );
+  }
+
+  if (!isValidUUID(id)) {
+    return res
+      .status(400)
+      .json(
+        new EliHealthError(
+          ERROR_CODES.RESPONSE.INVALID_UUID.code,
+          ERROR_CODES.RESPONSE.INVALID_UUID.name,
+          ERROR_CODES.RESPONSE.INVALID_UUID.description
+        )
+      );
+  }
+
+  try {
+    const row = await service.getTestStripSubmissionById(id);
+    if (!row) {
+      return res
+        .status(404)
+        .json(
+          new EliHealthError(
+            ERROR_CODES.RESPONSE.NOT_FOUND.code,
+            ERROR_CODES.RESPONSE.NOT_FOUND.name,
+            ERROR_CODES.RESPONSE.NOT_FOUND.description
+          )
+        );
+    }
+
+    res.json(row);
+  } catch (err) {
+    logger.error('Error fetching test strip submission by ID:', err);
+    return res.status(500).json(new InternalServerError());
+  }
 }

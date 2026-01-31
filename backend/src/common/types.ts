@@ -11,6 +11,7 @@ export interface ImageMetadata {
 export enum ScanValidity {
   VALID = 'VALID',
   INVALID = 'INVALID',
+  EXPIRED = 'EXPIRED',
 }
 
 export enum QRScanQuality {
@@ -52,3 +53,15 @@ export type TestStripSubmissionUploadResponse =
     })
   | { error: string }
   | EliHealthError;
+
+export interface TestStripSubmissionResponseModel {
+  id: string;
+  qr_code: string;
+  original_image_path: string;
+  thumbnail_path: string;
+  image_size: number;
+  image_dimensions: string;
+  status: string;
+  error_message: string | null;
+  created_at: string;
+}

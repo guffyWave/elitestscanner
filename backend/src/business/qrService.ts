@@ -55,13 +55,12 @@ export class QRService {
         // throw new InvalidQRCode(); // alternativly throw an error
       }
 
-      // Year expiration constarint
-
+      // Year expiration constraint
       const year: number = parseInt(match[1]);
       if (isNaN(year) || year < LAST_QR_YEAR_ALLOWED) {
         qrScanResult = {
           qrCode: qrText,
-          valid: ScanValidity.INVALID,
+          valid: ScanValidity.EXPIRED,
           errorMessage: ERROR_CODES.QR.EXPIRED_QR.description,
         };
         return qrScanResult;
