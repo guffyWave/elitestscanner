@@ -16,12 +16,16 @@
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "image-size": "^2.0.2",
+    "jsqr": "^1.4.0",
     "multer": "^2.0.2",
-    "pg": "^8.18.0"
+    "pg": "^8.18.0",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/image-size": "^0.7.0",
     "@types/jest": "^30.0.0",
     "@types/multer": "^2.0.0",
     "@types/node": "^25.1.0",

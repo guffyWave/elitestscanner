@@ -9,6 +9,15 @@ export async function uploadTestStrip(req: Request, res: Response) {
       return res.status(400).json({ error: 'No image uploaded' });
     }
 
+    /// image processing and QR code extraction would go here
+
+    
+
+
+
+
+
+
     const submission = await service.createSubmission({
       qrCode: null,
       originalImagePath: file.path,

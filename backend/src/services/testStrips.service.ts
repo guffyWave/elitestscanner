@@ -9,6 +9,9 @@ export async function createSubmission(data: {
   status: string;
   errorMessage?: string | null;
 }) {
+  //@note Todo : Add validation for data fields
+  //@note Todo : throw error if validation fails
+
   const query = `
     INSERT INTO test_strip_submissions
       (qr_code, original_image_path, thumbnail_path, image_size, image_dimensions, status, error_message)
@@ -23,7 +26,7 @@ export async function createSubmission(data: {
     data.imageSize,
     data.imageDimensions,
     data.status,
-    data.errorMessage || null
+    data.errorMessage || null,
   ];
 
   const result = await pool.query(query, values);
