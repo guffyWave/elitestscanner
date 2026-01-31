@@ -2,18 +2,18 @@ import { Request, Response } from 'express';
 import * as service from '../services/testStrips.service';
 import { ImageProcessor } from '../services/imageProcessor';
 import { QRService } from '../services/qrService';
-//@note todo: encapukate in business class
+//@note todo: encapsulate in business class
 import { insertSubmission } from '../services/testStrips.service';
+import { NoImageUploaded, SomethingWentWrong } from '../utils/errors';
 
 export async function uploadTestStrip(req: Request, res: Response) {
   try {
-    const file = req.file;
+    const file = req?.file;
+    const filePath = file?.path;
 
-    if (!file) {
-      return res.status(400).json({ error: 'No image uploaded' });
+    if (!file || !filePath) {
+      return res.status(400).json(new NoImageUploaded());
     }
-
-    const filePath = file.path;
 
     // 1. Image processing
     const meta = await ImageProcessor.processImage(filePath);
@@ -54,7 +54,9 @@ export async function uploadTestStrip(req: Request, res: Response) {
     });
   } catch (error: any) {
     console.error('Upload error:', error);
-    return res.status(500).json({ error: error.message });
+    return res
+      .status(500)
+      .json(new SomethingWentWrong(error instanceof Error ? error.message : ' '));
   }
 }
 

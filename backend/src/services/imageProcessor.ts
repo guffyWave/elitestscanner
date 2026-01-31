@@ -2,6 +2,21 @@ import sharp from 'sharp';
 import sizeOf from 'image-size';
 import fs from 'fs';
 import path from 'path';
+import {
+  EliHealthError,
+  FileNotFound,
+  InvalidImageDimensions,
+  InvalidImageFormat,
+  SomethingWentWrong,
+} from '../utils/errors';
+import {
+  ALLOWED_FILE_TYPES,
+  FILE_PATH_THUMBNAILS,
+  FILE_PATH_UPLOADS,
+  IMAGE_FORMAT_JPEG,
+  MAX_THUMBNAIL_HEIGHT,
+  MAX_THUMBNAIL_WIDTH,
+} from '../utils/constants';
 
 export interface ImageMetadata {
   size: number;
@@ -13,40 +28,52 @@ export interface ImageMetadata {
 
 export class ImageProcessor {
   static async processImage(filePath: string): Promise<ImageMetadata> {
-    if (!fs.existsSync(filePath)) {
-      throw new Error('File not found.');
+    try {
+      if (!fs.existsSync(filePath)) {
+        throw new FileNotFound();
+      }
+
+      // READ FILE INTO BUFFER
+      const buffer = fs.readFileSync(filePath);
+
+      // Extract metadata
+      const { size } = fs.statSync(filePath);
+      const dimensions = sizeOf(buffer);
+
+      if (!dimensions.width || !dimensions.height) {
+        throw new InvalidImageDimensions();
+      }
+
+      // Validate format
+      const allowedFormats = ['jpg', 'jpeg', 'png'];
+      const format = (dimensions.type || '').toLowerCase();
+
+      if (!allowedFormats.includes(format)) {
+        throw new InvalidImageFormat();
+      }
+
+      // Create thumbnail
+      const thumbnailPath = path.join(
+        FILE_PATH_UPLOADS,
+        FILE_PATH_THUMBNAILS,
+        `${Date.now()}_thumb.jpg`
+      );
+
+      await sharp(filePath)
+        .resize(MAX_THUMBNAIL_WIDTH, MAX_THUMBNAIL_HEIGHT, { fit: 'cover' })
+        .toFormat(IMAGE_FORMAT_JPEG)
+        .toFile(thumbnailPath);
+
+      return {
+        size,
+        width: dimensions.width,
+        height: dimensions.height,
+        format,
+        thumbnailPath,
+      };
+    } catch (error) {
+      //todo throw custom error
+      throw new SomethingWentWrong(error instanceof Error ? error.message : ' ');
     }
-
-    // READ FILE INTO BUFFER 
-    const buffer = fs.readFileSync(filePath);
-
-    // Extract metadata
-    const { size } = fs.statSync(filePath);
-    const dimensions = sizeOf(buffer);
-
-    if (!dimensions.width || !dimensions.height) {
-      throw new Error('Unable to read image dimensions');
-    }
-
-    // Validate format
-    const allowedFormats = ['jpg', 'jpeg', 'png'];
-    const format = (dimensions.type || '').toLowerCase();
-
-    if (!allowedFormats.includes(format)) {
-      throw new Error('Invalid file format. Only JPG/PNG allowed.');
-    }
-
-    // Create thumbnail
-    const thumbnailPath = path.join('uploads', 'thumbnails', `${Date.now()}_thumb.jpg`);
-
-    await sharp(filePath).resize(200, 200, { fit: 'cover' }).toFormat('jpeg').toFile(thumbnailPath);
-
-    return {
-      size,
-      width: dimensions.width,
-      height: dimensions.height,
-      format,
-      thumbnailPath,
-    };
   }
 }

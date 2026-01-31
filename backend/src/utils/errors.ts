@@ -1,9 +1,14 @@
 export const ERROR_CODES = {
   IMAGE: {
+    NO_IMAGE: {
+      code: 1000,
+      name: 'No image uploaded',
+      description: 'No image was uploaded',
+    },
     INVALID_FORMAT: {
       code: 1001,
       name: 'Invalid Image Format',
-      description: 'The image format is not supported',
+      description: 'This image format is not supported. Only JPG/PNG allowed.',
     },
     INVALID_SIZE: {
       code: 1002,
@@ -29,9 +34,23 @@ export const ERROR_CODES = {
       description: 'No QR code was found in the image',
     },
   },
+  FILE: {
+    NOT_FOUND: {
+      code: 3001,
+      name: 'File Not Found',
+      description: 'The requested file was not found',
+    },
+  },
+  GENERIC: {
+    SOMETHING_WENT_WRONG: {
+      code: 4000,
+      name: 'Something Went Wrong',
+      description: 'An unexpected error occurred, please try again later',
+    },
+  },
 } as const;
 
-class EliHealthError extends Error {
+export class EliHealthError extends Error {
   code: number;
   name: string;
   description: string;
@@ -41,6 +60,31 @@ class EliHealthError extends Error {
     this.code = code;
     this.name = name;
     this.description = description;
+  }
+}
+
+export class FileNotFound extends EliHealthError {
+  constructor() {
+    const { code, name, description } = ERROR_CODES.FILE.NOT_FOUND;
+    super(code, name, description);
+  }
+}
+
+export class SomethingWentWrong extends EliHealthError {
+  constructor(description?: string) {
+    const errorConfig = ERROR_CODES.GENERIC.SOMETHING_WENT_WRONG;
+    super(
+      errorConfig.code,
+      errorConfig.name,
+      description ? `${errorConfig.description} ${description}` : errorConfig.description
+    );
+  }
+}
+
+export class NoImageUploaded extends EliHealthError {
+  constructor() {
+    const { code, name, description } = ERROR_CODES.IMAGE.NO_IMAGE;
+    super(code, name, description);
   }
 }
 
