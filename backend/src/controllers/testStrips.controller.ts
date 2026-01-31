@@ -5,12 +5,21 @@ import { QRService } from '../business/qrService';
 //@note todo: encapsulate in business class
 import { insertTestStripSubmission } from '../services/testStrips.service';
 import { EliHealthError, NoImageUploaded, SomethingWentWrong } from '../utils/errors';
-import { ImageMetadata, QRScanQuality, QRScanResult, ScanValidity } from '../common/types';
+import {
+  ImageMetadata,
+  QRScanQuality,
+  QRScanResult,
+  ScanValidity,
+  TestStripSubmissionUploadResponse,
+} from '../common/types';
 import { RESPONSE_MESSAGE_FAILED_QR, RESPONSE_MESSAGE_SUCCESS } from '../utils/constants';
 
 //@todo : check type safety
 
-export async function uploadTestStrip(req: Request, res: Response) {
+export async function uploadTestStrip(
+  req: Request,
+  res: Response<TestStripSubmissionUploadResponse>
+) {
   try {
     const file = req?.file;
     const filePath = file?.path;
@@ -22,36 +31,13 @@ export async function uploadTestStrip(req: Request, res: Response) {
       return res.status(400).json(new NoImageUploaded());
     }
 
-    try {
-      // 1. QR Extraction
-      qrScanResult = await QRService.extractQR(filePath);
-      console.log('check qr ---', qrScanResult);
-    } catch (error) {
-      throw error;
-    }
+    // QR Extraction
+    qrScanResult = await QRService.extractQR(filePath);
+    console.log('check qr ---', qrScanResult);
 
-    try {
-      // 2. Image processing
-      metaData = await ImageProcessor.processImage(filePath);
-    } catch (error) {
-      throw error;
-    }
+    //Image processing
+    metaData = await ImageProcessor.processImage(filePath);
 
-    //@note Todo: Handle cases where QR extraction fails
-
-    // const submission = await service.createSubmission({
-    //   qrCode: null,
-    //   originalImagePath: file.path,
-    //   thumbnailPath: null,
-    //   imageSize: file.size,
-    //   imageDimensions: null,
-    //   status: 'uploaded',
-    //   errorMessage: null,
-    // });
-
-    // 3. Insert into DB
-
-    /// @note todo: fix data mapping into db
     const dbRecord = await insertTestStripSubmission({
       qrCode: qrScanResult?.qrCode || '',
       originalImagePath: filePath,

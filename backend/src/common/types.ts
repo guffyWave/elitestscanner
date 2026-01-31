@@ -1,3 +1,5 @@
+import { EliHealthError } from '../utils/errors';
+
 export interface ImageMetadata {
   size: number;
   width: number;
@@ -36,3 +38,17 @@ export interface TestStripSubmissionRecord {
   status: ScanValidity;
   errorMessage?: QRScanError;
 }
+
+export type TestStripSubmissionUploadResponse =
+  | (Omit<
+      TestStripSubmissionRecord,
+      'originalImagePath' | 'thumbnailPath' | 'imageSize' | 'imageDimensions'
+    > & {
+      id: string;
+      qrCodeValid: string;
+      quality: string;
+      processedAt: string;
+      message: string;
+    })
+  | { error: string }
+  | EliHealthError;
