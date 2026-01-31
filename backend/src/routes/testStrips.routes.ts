@@ -9,15 +9,12 @@ import { ROUTE_GET_ALL, ROUTE_UPLOAD } from '../utils/constants';
 
 const router = Router();
 
-//router.post('/upload', upload.single('image'), ctrl.uploadTestStrip);
-
 router.post(ROUTE_UPLOAD, (req, res) => {
   upload.single('image')(req, res, (err) => {
     if (err) {
       return res.status(400).json(err);
     }
-    // in case of no error , calling the controller
-    uploadTestStrip(req, res);
+    uploadTestStrip(req, res); // in case of no error,calling the controller
   });
 });
 //localhost:3000/api/test-strips?page=1&limit=10

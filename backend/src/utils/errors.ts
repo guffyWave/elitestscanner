@@ -64,6 +64,16 @@ export const ERROR_CODES = {
       name: 'Not Found',
       description: 'The requested test strip submission was not found',
     },
+    INVALID_INPUT: {
+      code: 5004,
+      name: 'Invalid Input',
+      description: 'The provided input is invalid',
+    },
+    NO_DATA: {
+      code: 5005,
+      name: 'No Data',
+      description: 'No data available',
+    },
   },
 } as const;
 

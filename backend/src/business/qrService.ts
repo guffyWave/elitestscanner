@@ -15,7 +15,7 @@ import { logger } from '../utils/logger';
 
 //@note : We should use Worker Queue (BullMQ + Redis) for better scalability in future
 //Flow: User uploads file → API stores file  → API enqueues job → Redis → Worker process picks job → Worker does heavy processing, stores processed file  → Client polls or uses WebSocket to get status
-//However, for now we are keeping it simple and doing CPU-heavy image processing in the request itself, in Express directly.
+//However, for now  doing CPU-heavy QR processing in the request itself
 export class QRService {
   static async extractQR(filePath: string): Promise<QRScanResult | null> {
     let qrScanResult: QRScanResult | null = {

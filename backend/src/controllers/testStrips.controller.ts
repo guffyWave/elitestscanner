@@ -94,13 +94,29 @@ export async function getAllTestStripSubmissions(req: Request, res: Response) {
   const limit = parseInt(req.query.limit as string) || 10; // default 10
 
   if (page < 1 || limit < 1) {
-    return res.status(400).json({ error: 'page and limit must be positive integers' });
+    return res
+      .status(400)
+      .json(
+        new EliHealthError(
+          ERROR_CODES.RESPONSE.INVALID_INPUT.code,
+          ERROR_CODES.RESPONSE.INVALID_INPUT.name,
+          ERROR_CODES.RESPONSE.INVALID_INPUT.description
+        )
+      );
   }
 
   const result = await service.getAllTestStripSubmissions(page, limit);
 
   if (!result) {
-    return res.status(500).json({ error: 'Failed to fetch submissions' });
+    return res
+      .status(500)
+      .json(
+        new EliHealthError(
+          ERROR_CODES.RESPONSE.NO_DATA.code,
+          ERROR_CODES.RESPONSE.NO_DATA.name,
+          ERROR_CODES.RESPONSE.NO_DATA.description
+        )
+      );
   }
   res.json(result);
 }
