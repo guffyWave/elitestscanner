@@ -1,10 +1,15 @@
 steps:
-  # Step 1: Build backend Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/elihealth-test-stripes-gufran/eli-test-scanner-backend', '.']
-    dir: 'backend' # <-- Important: run build inside backend folder
+    args:
+      [
+        'build',
+        '-t',
+        'gcr.io/elihealth-test-stripes-gufran/eli-test-scanner-backend',
+        '-f',
+        'backend/Dockerfile',
+        'backend',
+      ]
 
-  # Step 2: Push backend image to GCP Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/elihealth-test-stripes-gufran/eli-test-scanner-backend']
 
