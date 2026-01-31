@@ -1,5 +1,9 @@
 import { Request, Response } from 'express';
 import * as service from '../services/testStrips.service';
+import { ImageProcessor } from '../services/imageProcessor';
+import { QRService } from '../services/qrService';
+//@note todo: encapukate in business class
+import { insertSubmission } from '../services/testStrips.service';
 
 export async function uploadTestStrip(req: Request, res: Response) {
   try {
@@ -9,35 +13,48 @@ export async function uploadTestStrip(req: Request, res: Response) {
       return res.status(400).json({ error: 'No image uploaded' });
     }
 
-    /// image processing and QR code extraction would go here
+    const filePath = file.path;
 
-    
+    // 1. Image processing
+    const meta = await ImageProcessor.processImage(filePath);
 
+    // 2. QR Extraction
+    const qr = await QRService.extractQR(filePath);
+    console.log('check qr ---', qr);
+    //@note Todo: Handle cases where QR extraction fails
 
+    // const submission = await service.createSubmission({
+    //   qrCode: null,
+    //   originalImagePath: file.path,
+    //   thumbnailPath: null,
+    //   imageSize: file.size,
+    //   imageDimensions: null,
+    //   status: 'uploaded',
+    //   errorMessage: null,
+    // });
 
-
-
-
-    const submission = await service.createSubmission({
-      qrCode: null,
-      originalImagePath: file.path,
-      thumbnailPath: null,
-      imageSize: file.size,
-      imageDimensions: null,
-      status: 'uploaded',
-      errorMessage: null,
+    // 3. Insert into DB
+    const dbRecord = await insertSubmission({
+      qr_code: qr.qrCode,
+      original_image_path: filePath,
+      thumbnail_path: meta.thumbnailPath,
+      image_size: meta.size,
+      image_dimensions: `${meta.width}x${meta.height}`,
+      status: qr.valid ? 'processed' : 'error',
+      error_message: qr.valid ? null : qr.errorMessage,
     });
 
     res.json({
-      id: submission.id,
-      status: 'uploaded',
-      qrCode: null,
-      qrCodeValid: false,
-      quality: null,
-      processedAt: new Date(),
+      id: dbRecord.id,
+      status: qr.valid ? 'processed' : 'error',
+      qrCode: qr.qrCode,
+      qrCodeValid: qr.valid,
+      quality: meta.width * meta.height > 0 ? 'ok' : 'bad',
+      processedAt: dbRecord.created_at,
     });
-  } catch (err: any) {
-    res.status(500).json({ error: err.message });
+  } catch (error: any) {
+    console.error('Upload error:', error);
+    return res.status(500).json({ error: error.message });
   }
 }
 
