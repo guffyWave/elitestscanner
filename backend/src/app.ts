@@ -16,4 +16,11 @@ app.use('/api/test-strips', testStripsRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 //http://localhost:3000/uploads/1769832544060-191518940.png
 
+//@note : todo deploy of GCP
+
+//@note : put meaningful variable Names
+
+
+/// note - See the app is flowing ,  make diagram of the flow
+
 export default app;

@@ -17,14 +17,7 @@ import {
   MAX_THUMBNAIL_HEIGHT,
   MAX_THUMBNAIL_WIDTH,
 } from '../utils/constants';
-
-export interface ImageMetadata {
-  size: number;
-  width: number;
-  height: number;
-  format: string;
-  thumbnailPath: string;
-}
+import { ImageMetadata } from '../common/types';
 
 export class ImageProcessor {
   static async processImage(filePath: string): Promise<ImageMetadata> {

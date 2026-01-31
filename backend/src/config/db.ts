@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+//todo improve connection handling , pooling etc
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });

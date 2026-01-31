@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
 import * as service from '../services/testStrips.service';
-import { ImageProcessor } from '../services/imageProcessor';
-import { QRService } from '../services/qrService';
+import { ImageProcessor } from '../business/imageProcessor';
+import { QRService } from '../business/qrService';
 //@note todo: encapsulate in business class
-import { insertSubmission } from '../services/testStrips.service';
+import { insertTestStripSubmission } from '../services/testStrips.service';
 import { EliHealthError, NoImageUploaded, SomethingWentWrong } from '../utils/errors';
+import { ImageMetadata, QRScanQuality, QRScanResult, ScanValidity } from '../common/types';
+import { RESPONSE_MESSAGE_FAILED_QR, RESPONSE_MESSAGE_SUCCESS } from '../utils/constants';
 
 //@todo : check type safety
 
@@ -13,8 +15,8 @@ export async function uploadTestStrip(req: Request, res: Response) {
     const file = req?.file;
     const filePath = file?.path;
 
-    let qr;
-    let meta;
+    let qrScanResult: QRScanResult | null;
+    let metaData: ImageMetadata | null;
 
     if (!file || !filePath) {
       return res.status(400).json(new NoImageUploaded());
@@ -22,15 +24,15 @@ export async function uploadTestStrip(req: Request, res: Response) {
 
     try {
       // 1. QR Extraction
-      qr = await QRService.extractQR(filePath);
-      console.log('check qr ---', qr);
+      qrScanResult = await QRService.extractQR(filePath);
+      console.log('check qr ---', qrScanResult);
     } catch (error) {
       throw error;
     }
 
     try {
       // 2. Image processing
-      meta = await ImageProcessor.processImage(filePath);
+      metaData = await ImageProcessor.processImage(filePath);
     } catch (error) {
       throw error;
     }
@@ -50,24 +52,33 @@ export async function uploadTestStrip(req: Request, res: Response) {
     // 3. Insert into DB
 
     /// @note todo: fix data mapping into db
-    const dbRecord = await insertSubmission({
-      qr_code: qr.qrCode,
-      original_image_path: filePath,
-      thumbnail_path: meta.thumbnailPath,
-      image_size: meta.size,
-      image_dimensions: `${meta.width}x${meta.height}`,
-      status: qr.valid ? 'processed' : 'error',
-      error_message: qr.valid ? null : qr.errorMessage,
+    const dbRecord = await insertTestStripSubmission({
+      qrCode: qrScanResult?.qrCode || '',
+      originalImagePath: filePath,
+      thumbnailPath: metaData?.thumbnailPath || null,
+      imageSize: metaData?.size || 0,
+      imageDimensions: `${metaData?.width || 0}x${metaData?.height || 0}`,
+      status: qrScanResult?.valid || ScanValidity.INVALID,
+      errorMessage: qrScanResult?.errorMessage || null,
     });
 
-    if (qr && meta) {
+    if (qrScanResult && metaData) {
       res.json({
-        id: dbRecord.id,
-        status: qr.valid ? 'processed' : 'error',
-        qrCode: qr.qrCode,
-        qrCodeValid: qr.valid,
-        quality: meta.width * meta.height > 0 ? 'ok' : 'bad',
-        processedAt: dbRecord.created_at,
+        id: dbRecord?.id,
+        status: qrScanResult?.valid || ScanValidity.INVALID,
+        qrCode: qrScanResult?.qrCode || null,
+        qrCodeValid: qrScanResult?.valid || ScanValidity.INVALID,
+        quality:
+          qrScanResult?.valid === ScanValidity.VALID
+            ? metaData?.width && metaData?.height
+              ? QRScanQuality.GOOD
+              : QRScanQuality.BAD
+            : QRScanQuality.NA,
+        processedAt: dbRecord?.created_at,
+        message:
+          qrScanResult?.valid === ScanValidity.VALID
+            ? RESPONSE_MESSAGE_SUCCESS
+            : qrScanResult?.errorMessage || RESPONSE_MESSAGE_FAILED_QR,
       });
     }
   } catch (error: any) {
@@ -84,14 +95,14 @@ export async function uploadTestStrip(req: Request, res: Response) {
 }
 
 export async function getAll(req: Request, res: Response) {
-  const rows = await service.getAllSubmissions();
+  const rows = await service.getAllTestStripSubmissions();
   res.json(rows);
 }
 
 export async function getOne(req: Request, res: Response) {
-  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id || '';
+  const id = Array.isArray(req?.query?.id) ? req?.query?.id[0] : req.query.id || '';
 
-  const row = await service.getSubmissionById(id as string);
-  if (!row) return res.status(404).json({ error: 'Not found' });
+  const row = await service.getTestStripSubmissionById(id as string);
+  if (!row) return res.status(404).json({ error: 'Not found' }); /// todo Object not found error
   res.json(row);
 }

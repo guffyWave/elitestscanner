@@ -1,14 +1,5 @@
+import { TestStripSubmissionRecord } from '../common/types';
 import { pool } from '../config/db';
-
-export interface SubmissionRecord {
-  qr_code: string | null;
-  original_image_path: string;
-  thumbnail_path: string | null;
-  image_size: number;
-  image_dimensions: string;
-  status: string;
-  error_message?: string | null;
-}
 
 // export async function createSubmission(data: {
 //   qrCode: string | null;
@@ -45,7 +36,7 @@ export interface SubmissionRecord {
 
 //@note Todo : Convert into a class
 
-export async function insertSubmission(data: SubmissionRecord) {
+export async function insertTestStripSubmission(data: TestStripSubmissionRecord) {
   const query = `
       INSERT INTO test_strip_submissions
       (qr_code, original_image_path, thumbnail_path, image_size, image_dimensions, status, error_message)
@@ -54,29 +45,31 @@ export async function insertSubmission(data: SubmissionRecord) {
     `;
 
   const values = [
-    data.qr_code,
-    data.original_image_path,
-    data.thumbnail_path,
-    data.image_size,
-    data.image_dimensions,
+    data.qrCode,
+    data.originalImagePath,
+    data.thumbnailPath,
+    data.imageSize,
+    data.imageDimensions,
     data.status,
-    data.error_message || null,
+    data.errorMessage || null,
   ];
 
   const result = await pool.query(query, values);
   return result.rows[0];
 }
 
-export async function getAllSubmissions() {
+export async function getAllTestStripSubmissions() {
   const res = await pool.query(`
-    SELECT id, qr_code, status, thumbnail_path, created_at
+    SELECT id, qr_code, status, thumbnail_path, created_at, original_image_path, image_size, image_dimensions, error_message
     FROM test_strip_submissions
     ORDER BY created_at DESC
   `);
   return res.rows;
 }
 
-export async function getSubmissionById(id: string) {
+//@note : this is not working
+//how to prevent sql injection here ?
+export async function getTestStripSubmissionById(id: string) {
   const res = await pool.query(`SELECT * FROM test_strip_submissions WHERE id = $1`, [id]);
   return res.rows[0];
 }

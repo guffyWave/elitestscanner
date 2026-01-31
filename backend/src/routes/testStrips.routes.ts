@@ -1,21 +1,22 @@
 import { Router } from 'express';
 import { upload } from '../middleware/upload';
-import * as ctrl from '../controllers/testStrips.controller';
+import { getAll, getOne, uploadTestStrip } from '../controllers/testStrips.controller';
+import { ROUTE_GET_ALL, ROUTE_UPLOAD } from '../utils/constants';
 
 const router = Router();
 
 //router.post('/upload', upload.single('image'), ctrl.uploadTestStrip);
 
-router.post('/upload', (req, res) => {
+router.post(ROUTE_UPLOAD, (req, res) => {
   upload.single('image')(req, res, (err) => {
     if (err) {
       return res.status(400).json(err);
     }
     // in case of no error , calling the  controller
-    ctrl.uploadTestStrip(req, res);
+    uploadTestStrip(req, res);
   });
 });
-router.get('/', ctrl.getAll);
-router.get('/:id', ctrl.getOne);
+router.get(ROUTE_GET_ALL, getAll);
+router.get('/:id', getOne);
 
 export default router;

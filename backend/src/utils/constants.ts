@@ -1,3 +1,7 @@
+export const ROUTE_UPLOAD = '/upload';
+export const ROUTE_GET_ALL = '/';
+export const ROUTE_GET_ONE = '/:id';
+
 export const FILE_PATH_UPLOADS = 'uploads';
 export const FILE_PATH_THUMBNAILS = 'thumbnails';
 
@@ -14,3 +18,11 @@ export const ALLOWED_FILE_TYPES = ['jpg', 'jpeg', 'png'];
 export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 export const MAX_THUMBNAIL_WIDTH = 200;
 export const MAX_THUMBNAIL_HEIGHT = 200;
+
+// Basic validation (format: ELI-YYYY-XXX)
+export const ELI_QR_VALIDATION_REFEX = /^ELI-(\d{4})-[A-Z0-9]+$/;
+export const LAST_QR_YEAR_ALLOWED = 2023;
+
+export const RESPONSE_MESSAGE_SUCCESS = "Test strip uploaded and processed successfully.";
+export const RESPONSE_MESSAGE_FAILED_QR = "There was an issue with the uploaded test strip.";
+
