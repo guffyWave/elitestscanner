@@ -45,7 +45,7 @@ export class ImageProcessor {
       }
 
       // Validate format
-     // const allowedFormats = ['jpg', 'jpeg', 'png'];
+      // const allowedFormats = ['jpg', 'jpeg', 'png'];
       const format = (dimensions.type || '').toLowerCase();
 
       if (!ALLOWED_FILE_TYPES.includes(format)) {
@@ -72,7 +72,10 @@ export class ImageProcessor {
         thumbnailPath,
       };
     } catch (error) {
-      //todo throw custom error
+      if (error instanceof EliHealthError) {
+        throw error;
+      }
+
       throw new SomethingWentWrong(error instanceof Error ? error.message : ' ');
     }
   }

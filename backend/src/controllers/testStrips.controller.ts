@@ -6,21 +6,35 @@ import { QRService } from '../services/qrService';
 import { insertSubmission } from '../services/testStrips.service';
 import { EliHealthError, NoImageUploaded, SomethingWentWrong } from '../utils/errors';
 
+//@todo : check type safety
+
 export async function uploadTestStrip(req: Request, res: Response) {
   try {
     const file = req?.file;
     const filePath = file?.path;
 
+    let qr;
+    let meta;
+
     if (!file || !filePath) {
       return res.status(400).json(new NoImageUploaded());
     }
 
-    // 1. Image processing
-    const meta = await ImageProcessor.processImage(filePath);
+    try {
+      // 1. QR Extraction
+      qr = await QRService.extractQR(filePath);
+      console.log('check qr ---', qr);
+    } catch (error) {
+      throw error;
+    }
 
-    // 2. QR Extraction
-    const qr = await QRService.extractQR(filePath);
-    console.log('check qr ---', qr);
+    try {
+      // 2. Image processing
+      meta = await ImageProcessor.processImage(filePath);
+    } catch (error) {
+      throw error;
+    }
+
     //@note Todo: Handle cases where QR extraction fails
 
     // const submission = await service.createSubmission({
@@ -34,6 +48,8 @@ export async function uploadTestStrip(req: Request, res: Response) {
     // });
 
     // 3. Insert into DB
+
+    /// @note todo: fix data mapping into db
     const dbRecord = await insertSubmission({
       qr_code: qr.qrCode,
       original_image_path: filePath,
@@ -44,14 +60,16 @@ export async function uploadTestStrip(req: Request, res: Response) {
       error_message: qr.valid ? null : qr.errorMessage,
     });
 
-    res.json({
-      id: dbRecord.id,
-      status: qr.valid ? 'processed' : 'error',
-      qrCode: qr.qrCode,
-      qrCodeValid: qr.valid,
-      quality: meta.width * meta.height > 0 ? 'ok' : 'bad',
-      processedAt: dbRecord.created_at,
-    });
+    if (qr && meta) {
+      res.json({
+        id: dbRecord.id,
+        status: qr.valid ? 'processed' : 'error',
+        qrCode: qr.qrCode,
+        qrCodeValid: qr.valid,
+        quality: meta.width * meta.height > 0 ? 'ok' : 'bad',
+        processedAt: dbRecord.created_at,
+      });
+    }
   } catch (error: any) {
     console.error('Upload error:', error);
 

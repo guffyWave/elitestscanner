@@ -11,7 +11,7 @@ router.post('/upload', (req, res) => {
     if (err) {
       return res.status(400).json(err);
     }
-    // IF NO ERROR, call your controller
+    // in case of no error , calling the  controller
     ctrl.uploadTestStrip(req, res);
   });
 });
