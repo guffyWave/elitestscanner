@@ -17,7 +17,7 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
 
   const cameraRef = useRef<Camera>(null);
   const devices = useCameraDevices();
-  const device = devices.back;
+  const backCamera = devices.find((device) => device.position === 'back'); // find back camera
 
   useEffect(() => {
     (async () => {
@@ -34,7 +34,7 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
     );
   }
 
-  if (!device) {
+  if (!backCamera) {
     return (
       <View style={styles.center}>
         <Text>This device does not support camera</Text>
@@ -79,18 +79,26 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
       name: 'compressed-photo.jpg',
       type: 'image/jpeg',
     } as any);
+    // be connect with hostpot and put ip address of machine runnig the backend
+    // cmd> ipconfig getifaddr en0
+
 
     try {
-      const response = await axios.post('http://localhost:3000/api/test-strips/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      const response = await axios.post(
+        'http://10.242.231.225:3000/api/test-strips/upload',
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      );
+      console.log('check response ---', response);
 
       Alert.alert('Success', 'Image uploaded successfully!');
       setPhoto(null);
       setCompressedPhoto(null);
     } catch (error) {
       console.error(error);
-      Alert.alert('Error', 'Failed to upload image');
+      Alert.alert('Error', 'Failed to upload image' + error);
     } finally {
       setUploading(false);
     }
@@ -113,16 +121,20 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
       ) : (
         <Camera
           ref={cameraRef}
-          style={StyleSheet.absoluteFill}
-          device={device}
+          style={{ width: 300, height: 300 }} // fixed width and height
+          device={backCamera}
           isActive={true}
           photo={true}
         />
       )}
 
       <Text style={styles.description}>Capture your test strrip QR Code Image </Text>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={takePhoto}>
         <Text style={styles.buttonText}>Capture</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={uploadPhoto}>
+        <Text style={styles.buttonText}>Upload</Text>
       </TouchableOpacity>
     </View>
   );
@@ -139,8 +151,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   cameraBox: {
-    width: 180,
-    height: 180,
+    width: 300,
+    height: 300,
     borderWidth: 2,
     borderStyle: 'dashed',
     borderColor: '#999',
