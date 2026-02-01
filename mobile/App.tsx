@@ -26,8 +26,8 @@ function AppContent() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <HomeScreen params={{}} />
-      {/* <TestStripSubmissionListScreen params={{}} /> */}
+      {/* <HomeScreen params={{}} /> */}
+      <TestStripSubmissionListScreen params={{}} />
     </SafeAreaView>
   );
 }

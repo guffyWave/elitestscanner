@@ -1,22 +1,17 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
+import React, { FC, lazy, Suspense, useCallback, useEffect, useState } from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import { styles } from './TestStripSubmissionListScreen.Styles';
-
-type SubmissionItem = { id: string; image?: any; status: string; description: string };
-const DATA: SubmissionItem[] = [
-  {
-    id: 'abc-efg-hij-klm',
-    //image: require(''),
-    status: 'VALID',
-    description: 'This is valid',
-  },
-  {
-    id: 'xyz-123-456-789',
-    //image: require('../assets/sample.png'),
-    status: 'VALID',
-    description: 'Another valid submission',
-  },
-];
+import { useTestStripSubmission } from '../../business/useTestStripSubmission';
+import SubmissionListItemView from '../../components/SubmissionListItemView';
+import { TestStripSubmissionItem } from '../../model/testStripSubmissionList';
 
 interface TestStripSubmissionListScreenProps {
   params: object;
@@ -24,22 +19,12 @@ interface TestStripSubmissionListScreenProps {
 
 const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = React.memo(
   ({ params }) => {
-    const [state, setState] = useState<string>();
+    const { testStripSubmissionItemList, isLoading, errorMessage } = useTestStripSubmission();
 
-    const renderItem = ({ item }: { item: SubmissionItem }) => (
-      <TouchableOpacity style={styles.card}>
-        <Image source={item.image} style={styles.thumbnail} />
-        <View style={styles.rightSection}>
-          <View style={styles.topBlock}>
-            <Text style={styles.label}>QR Code</Text>
-            <Text style={styles.status}>{item.status}</Text>
-          </View>
-          <View style={styles.bottomBlock}>
-            <Text style={styles.idText}>ID: {item.id}</Text>
-            <Text style={styles.description}>{item.description}</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
+    const ErrorView = lazy(() => import('../../components/ErrorView'));
+
+    const renderItem = ({ item }: { item: TestStripSubmissionItem }) => (
+      <SubmissionListItemView item={item} />
     );
 
     //pull to refresh
@@ -48,8 +33,16 @@ const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = Re
     return (
       <View style={styles.container}>
         <Text style={styles.title}> Scanned Test Strips History </Text>
+        {isLoading ? <ActivityIndicator size={'large'} /> : null}
+
+        {errorMessage ? (
+          <Suspense fallback={<ActivityIndicator size="small" />}>
+            <ErrorView message={errorMessage} />
+          </Suspense>
+        ) : null}
+
         <FlatList
-          data={DATA}
+          data={testStripSubmissionItemList}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
           contentContainerStyle={{ paddingVertical: 20 }}
