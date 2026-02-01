@@ -5,10 +5,10 @@
  * @format
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import HomeScreen from './src/containers/HomeScreen';
+import TestStripSubmissionListScreen from './src/containers/TestStripSubmissionListScreen';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -30,7 +30,8 @@ function AppContent() {
         templateFileName="App.tsx"
         safeAreaInsets={safeAreaInsets}
       /> */}
-      <HomeScreen params={{}} />
+      {/* <HomeScreen params={{}} /> */}
+      <TestStripSubmissionListScreen params={{}} />
     </SafeAreaView>
   );
 }
