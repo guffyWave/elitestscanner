@@ -15,7 +15,7 @@ mobile/ios/.xcode.env.local
 mobile/ios/bundle/*
 # Ignore CocoaPods installed files
 mobile/ios/Pods/
-/vendor/bundle/
+mobile/vendor/bundle/
 
 
 ios/assets
