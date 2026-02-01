@@ -26,10 +26,6 @@ function AppContent() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      /> */}
       {/* <HomeScreen params={{}} /> */}
       <TestStripSubmissionListScreen params={{}} />
     </SafeAreaView>
