@@ -8,4 +8,7 @@ export const styles = StyleSheet.create({
     marginTop: 30,
     color: 'black',
   },
+  listContainer:{
+     paddingVertical: 20 
+  }
 });

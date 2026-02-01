@@ -32,7 +32,7 @@ const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = Re
 
     return (
       <View style={styles.container}>
-        <Text style={styles.title}> Scanned Test Strips History </Text>
+        <Text style={styles.title}>Your scan history </Text>
         {isLoading ? <ActivityIndicator size={'large'} /> : null}
 
         {errorMessage ? (
@@ -45,7 +45,7 @@ const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = Re
           data={testStripSubmissionItemList}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
-          contentContainerStyle={{ paddingVertical: 20 }}
+          contentContainerStyle={styles.listContainer}
         />
       </View>
     );

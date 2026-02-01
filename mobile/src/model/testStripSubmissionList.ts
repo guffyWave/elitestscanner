@@ -6,10 +6,23 @@ export interface TestStripSubmissionListResponse {
   totalPages: number;
 }
 
+export enum ScanValidity {
+  VALID = 'VALID',
+  INVALID = 'INVALID',
+  EXPIRED = 'EXPIRED',
+}
+
+export enum QRScanQuality {
+  GOOD = 'GOOD',
+  BAD = 'BAD',
+  UNKNOWN = 'UNKNOWN',
+  NA = 'NA',
+}
+
 export interface TestStripSubmissionModel {
   id: string;
   qr_code: string;
-  status: 'VALID' | 'INVALID' | 'EXPIRED'; // tighten typing if desired
+  status: ScanValidity; // tighten typing if desired
   thumbnail_path: string;
   created_at: string; // or Date if you parse it
   original_image_path: string;
