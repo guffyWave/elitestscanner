@@ -20,7 +20,8 @@ interface TestStripSubmissionListScreenProps {
 
 const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = React.memo(
   ({ params }) => {
-    const { testStripSubmissionItemList, isLoading, errorMessage } = useTestStripSubmission();
+    const { testStripSubmissionItemList, isLoading, errorMessage, fetchTestStripSubmissionList } =
+      useTestStripSubmission();
 
     const ErrorView = lazy(() => import('../../components/ErrorView'));
 
@@ -28,13 +29,12 @@ const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = Re
       <SubmissionListItemView item={item} />
     );
 
-    //pull to refresh
-    // lazy loading
-
     return (
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Your scan history </Text>
-        {isLoading ? <ActivityIndicator size={'large'} /> : null}
+        {isLoading && !testStripSubmissionItemList.length ? (
+          <ActivityIndicator size={'large'} />
+        ) : null}
 
         {errorMessage ? (
           <Suspense fallback={<ActivityIndicator size="small" />}>
@@ -44,9 +44,11 @@ const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = Re
 
         <FlatList
           data={testStripSubmissionItemList}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item?.id}
           renderItem={renderItem}
           contentContainerStyle={styles.listContainer}
+          refreshing={isLoading}
+          onRefresh={fetchTestStripSubmissionList}
         />
       </SafeAreaView>
     );

@@ -17,6 +17,8 @@ export const fetchTestStripsSubmisionAPI = async (): Promise<
     return data;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    throw new Error(`Something went wrong: ` + message);
+    throw new Error(
+      `Something went wrong. Make sure you are connected with internet. Error:` + message
+    );
   }
 };

@@ -5,10 +5,9 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '500',
-    marginTop: 30,
     color: 'black',
   },
-  listContainer:{
-     paddingVertical: 20 
-  }
+  listContainer: {
+    paddingVertical: 20,
+  },
 });

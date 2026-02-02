@@ -1,4 +1,4 @@
-import { useDebugValue, useEffect, useReducer, useState } from 'react';
+import { useDebugValue, useEffect, useReducer } from 'react';
 import {
   TestStripSubmissionItem,
   TestStripSubmissionListResponse,
@@ -44,7 +44,6 @@ const reducerFunction = (
 };
 
 export const useTestStripSubmission = () => {
-  // state initialization
   const [submissionsState, dispatch] = useReducer(reducerFunction, initialState);
 
   useDebugValue('Debug TestStripSubmission Hook');
@@ -57,7 +56,6 @@ export const useTestStripSubmission = () => {
         let submissionsList: TestStripSubmissionItem[] = [];
 
         response?.data.forEach((_submission) => {
-          //Todo sanity check
           submissionsList.push({
             id: _submission?.id,
             qr_code: _submission?.qr_code,
@@ -67,8 +65,6 @@ export const useTestStripSubmission = () => {
             error_message: _submission?.error_message,
           });
         });
-
-        console.log('check submissionsList ---', submissionsList);
 
         dispatch({
           type: 'SUBMISSIONS_FETCH_SUCCEDED',
@@ -85,7 +81,6 @@ export const useTestStripSubmission = () => {
     fetchTestStripSubmissionList();
   }, []);
 
-  // exposing hook state and mutators
   return {
     testStripSubmissionItemList: submissionsState?.testStripSubmissionItemList,
     isLoading: submissionsState?.isLoading,
