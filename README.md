@@ -1,18 +1,6 @@
 ### Submission of Eli Health Technical Test: Test Strip Scanner
 
-### Screenshots App
-
-### Scan Test Strip
-
-<img src="/screenshots/app_one.png" alt="Scan Test Strip" width="300" height="500">
-
-### Strips History Page
-
-<img src="/screenshots/app_three.png" alt="Strips History Page" width="300" height="500">
-
-### Captured Test Strip
-
-<img src="/screenshots/app_two.png" alt="Captured Test Strip" width="300" height="500">
+<img src="/screenshots/app_one.png" alt="Scan Test Strip" width="300" height="600">
 
 ### prerequisites -
 
@@ -45,11 +33,13 @@ This will setup the backend which can be accessed over local host by curl , brow
 http://localhost:3000/ will return return json object of simple message with author name and contact
 
 Upload image with postman or curl
-curl -X POST http://localhost:3000/api/test-strips/upload \
- -F "image=@/path/to/sample.jpg"
+
+        curl -X POST http://localhost:3000/api/test-strips/upload \
+        -F "image=@/path/to/sample.jpg"
 
 Get All Uploaded Test Strips
-http://localhost:3000/api/test-strips
+
+                http://localhost:3000/api/test-strips
 
 ### Running Tests
 
@@ -65,14 +55,15 @@ npm test qrService.test.ts
 
 - http://localhost:3000/ Welcome
 
-Response :  
-{
-"message": "Hello from eli-test-scanner backend!",
-"version": "#1 SMP Thu Jan 15 14:58:53 UTC 2026",
-"developer": "Gufran Khurshid",
-"phone": "+1 437-322-8442",
-"emailId": "khurshid.gufran@gmail.com"
-}
+Response :
+
+    {
+    "message": "Hello from eli-test-scanner backend!",
+    "version": "#1 SMP Thu Jan 15 14:58:53 UTC 2026",
+    "developer": "Gufran Khurshid",
+    "phone": "+1 437-322-8442",
+    "emailId": "khurshid.gufran@gmail.com"
+    }
 
 - Get Test Strip Submissions
 
@@ -158,15 +149,31 @@ Apps can't connect with localhost, so IP address has to be be set in the mobile 
 
 Execute 'ipconfig getifaddr en0' to get local machine IP addess where the backend server is running. Many times firewall or the Wifi router doesn't let Phone connect with local server. So , in order to by pass this , disconnect from Wifi and create a Hotspot on Mobile and connect Machine with Hotspot.
 
-Then search in project 'API_BASE_URL' and change the IP adrress to the obtained
+Then search in project 'API_BASE_URL' and change the IP addrress to the obtained
 
-adb reverse tcp:8081 tcp:8081
+    adb reverse tcp:8081 tcp:8081
 
 Now execute
 
     npx react-native run-android
 
-App will be running . Make sure to increase the screen brightess if thw QR is located on digital screen .
+App will be running . Make sure to increase the screen brightess if the QR is located on digital screen .
+
+### Limitation
+
+A few times , if QR is being scanned from a digital screen (laptop+ mobile) the QR code doesn't gets detected . Make sure to increase the screen brightess/contrast if the QR is located on digital screen .
+
+### Screenshots App
+
+<img src="/screenshots/app_one.png" alt="Scan Test Strip" width="300" height="600">
+
+### Strips History Page
+
+<img src="/screenshots/app_three.png" alt="Strips History Page" width="300" height="600">
+
+### Captured Test Strip
+
+<img src="/screenshots/app_two.png" alt="Captured Test Strip" width="300" height="600">
 
 ### Screenshots Backend API
 
