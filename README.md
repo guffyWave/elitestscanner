@@ -1,5 +1,19 @@
 ### Submission of Eli Health Technical Test: Test Strip Scanner
 
+### Screenshots App
+
+### Scan Test Strip
+
+![UploadAPI](/screenshots/app_one.png 'Scan Test Strip')
+
+### Strips History Page
+
+![UploadAPI](/screenshots/app_three.png 'Strips History Page ')
+
+### Captured Test Strip
+
+![UploadAPI](/screenshots/app_two.png 'Captured Test Strip')
+
 ### prerequisites -
 
 Node v20.19.4
@@ -26,7 +40,7 @@ Backend run -
 - npm install
 - docker-compose up --build
 
-This is will setup the backend which can be accessed over local host by curl , browser , or postman http cleint
+This will setup the backend which can be accessed over local host by curl , browser , or postman http cleint
 
 http://localhost:3000/ will return return json object of simple message with author name and contact
 
@@ -146,7 +160,7 @@ Execute 'ipconfig getifaddr en0' to get local machine IP addess where the backen
 
 Then search in project 'API_BASE_URL' and change the IP adrress to the obtained
 
- adb reverse tcp:8081 tcp:8081
+adb reverse tcp:8081 tcp:8081
 
 Now execute
 
@@ -154,7 +168,7 @@ Now execute
 
 App will be running . Make sure to increase the screen brightess if thw QR is located on digital screen .
 
-### Screenshots
+### Screenshots Backend API
 
 ![UploadAPI](/screenshots/uploadapi.png 'Upload API')
 ![UploadAPI](/screenshots/getallteststrips.png 'Get All Test Strips')
