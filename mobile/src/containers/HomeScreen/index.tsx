@@ -17,11 +17,12 @@ const HomeScreen: FC<HomeScreenProps> = React.memo(({ params }) => {
   return (
     <SafeAreaView style={styles.container}>
       <QRScanner params={{}} />
-      <Text style={styles.title}>Eli Test Scanner</Text>
-
-      <TouchableOpacity style={styles.secondaryButton}>
-        <Text style={styles.buttonText}>History</Text>
-      </TouchableOpacity>
+      <View style={styles.titleHistoryContainer}>
+        <Text style={styles.title}>Eli Test Scanner</Text>
+        <TouchableOpacity style={styles.secondaryButton}>
+          <Text style={styles.buttonText}>History</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 });

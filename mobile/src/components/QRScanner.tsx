@@ -154,11 +154,13 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
 
       {uploadResponse ? (
         <ScrollView style={styles.uploadResponseBox}>
-          <Text style={styles.statusText}>Status: {uploadResponse?.status}</Text>
-          <Text style={styles.qrCodeText}>QR Code : {uploadResponse?.qrCode}</Text>
-          <Text style={styles.qrCodeValidText}>QR Code Valid : {uploadResponse?.qrCodeValid}</Text>
-          <Text style={styles.qualityText}>Quality : {uploadResponse?.quality}</Text>
-          <Text style={styles.messageText}>Message : {uploadResponse?.message}</Text>
+          <Text style={styles.statusText}>Status: {uploadResponse?.status || ''}</Text>
+          <Text style={styles.qrCodeText}>QR Code : {uploadResponse?.qrCode || ''}</Text>
+          <Text style={styles.qrCodeValidText}>
+            QR Code Valid : {uploadResponse?.qrCodeValid || ''}
+          </Text>
+          <Text style={styles.qualityText}>Quality : {uploadResponse?.quality || ''}</Text>
+          <Text style={styles.messageText}>Message : {uploadResponse?.message || ''}</Text>
         </ScrollView>
       ) : null}
     </View>
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
     height: DEVICE_WIDTH,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
+    // marginBottom: 16,
   },
   capturedBox: {
     width: 0.9 * DEVICE_WIDTH,
@@ -201,10 +203,10 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#007AFF',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
+    paddingVertical: 6,
+    paddingHorizontal: 20,
     borderRadius: 8,
-    marginBottom: 20,
+    marginBottom: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -217,8 +219,9 @@ const styles = StyleSheet.create({
   buttonText: { color: '#fff', fontSize: 18, fontWeight: '600' },
   uploadResponseBox: {
     backgroundColor: '#e6e6e6',
-    padding: 16,
+    padding: 6,
     borderRadius: 8,
+    maxHeight: 135,
   },
   infoText: { fontSize: 18, marginVertical: 4 },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
