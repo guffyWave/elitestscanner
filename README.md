@@ -4,15 +4,15 @@
 
 ### Scan Test Strip
 
-![UploadAPI](/screenshots/app_one.png 'Scan Test Strip')
+<img src="/screenshots/app_one.png" alt="Scan Test Strip" width="300" height="500">
 
 ### Strips History Page
 
-![UploadAPI](/screenshots/app_three.png 'Strips History Page ')
+<img src="/screenshots/app_three.png" alt="Strips History Page" width="300" height="500">
 
 ### Captured Test Strip
 
-![UploadAPI](/screenshots/app_two.png 'Captured Test Strip')
+<img src="/screenshots/app_two.png" alt="Captured Test Strip" width="300" height="500">
 
 ### prerequisites -
 
