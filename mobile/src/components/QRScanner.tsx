@@ -104,7 +104,6 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
           headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
-      // console.log('check response ---', response);
       setUploadResponse(response?.data);
 
       Alert.alert('Success', 'Image uploaded successfully!');
@@ -146,7 +145,7 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
       ) : (
         <View>
           <TouchableOpacity style={styles.button} onPress={uploadPhoto}>
-            {uploading ? <ActivityIndicator size={'small'} /> : null}
+            {uploading ? <ActivityIndicator size={'small'} color={'#fff'} /> : null}
             <Text style={styles.buttonText}>Upload</Text>
           </TouchableOpacity>
         </View>
@@ -154,7 +153,9 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
 
       {uploadResponse ? (
         <ScrollView style={styles.uploadResponseBox}>
-          <Text style={styles.statusText}>Status: {uploadResponse?.status || ''}</Text>
+          <Text style={styles.statusText(uploadResponse?.status)}>
+            Status: {uploadResponse?.status || ''}
+          </Text>
           <Text style={styles.qrCodeText}>QR Code : {uploadResponse?.qrCode || ''}</Text>
           <Text style={styles.qrCodeValidText}>
             QR Code Valid : {uploadResponse?.qrCodeValid || ''}
@@ -181,7 +182,6 @@ const styles = StyleSheet.create({
     height: DEVICE_WIDTH,
     alignItems: 'center',
     justifyContent: 'center',
-    // marginBottom: 16,
   },
   capturedBox: {
     width: 0.9 * DEVICE_WIDTH,
@@ -198,9 +198,6 @@ const styles = StyleSheet.create({
     width: 0.8 * DEVICE_WIDTH,
     height: 0.8 * DEVICE_WIDTH,
   },
-  cameraIcon: {
-    //tintColor: '#555',
-  },
   button: {
     backgroundColor: '#007AFF',
     paddingVertical: 6,
@@ -209,10 +206,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
   },
   captureInstruction: {
     fontSize: 12,
-    color: '#222', // Dark gray
+    color: '#222',
     textAlign: 'center',
     marginBottom: 10,
   },
@@ -225,12 +223,12 @@ const styles = StyleSheet.create({
   },
   infoText: { fontSize: 18, marginVertical: 4 },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  statusText: {
+  statusText: (status: ScanValidity) => ({
     fontSize: 10,
     fontWeight: 'bold',
     marginVertical: 4,
-    color: '#111',
-  },
+    color: status === 'INVALID' ? '#FF0000' : status === 'VALID' ? '#2ECC71' : '#999999',
+  }),
   qrCodeText: {
     fontSize: 10,
     marginVertical: 4,
