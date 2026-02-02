@@ -155,3 +155,5 @@ App will be running !
 ### Screenshots
 
 ![UploadAPI](/screenshots/uploadapi.png 'Upload API')
+![UploadAPI](/screenshots/getallteststrips.png 'Get All Test Strips')
+![UploadAPI](/screenshots/getoneteststrip.png 'Get One Test Strip')
