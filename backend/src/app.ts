@@ -19,11 +19,13 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 export default app;
 
-// Folder	Responsibility
-// controllers -	Input/output, validate request, call service
-// services	Business logic (image processing)
-// middleware	file upload, auth, validation
-// utils	helper libs (logger, DB connectors)
-// config	env variables
-// routes	express routing only
+//---- Backend Folder Responsibility --->>
+// routes - express routing only
+// controllers -	Input/output, Validate request and make response ,
+// business - Image processing , QR Extraction
+// services	 - Data manipulation (Databse quries)
+// middleware	file upload
+// utils	- constants, errors, loggers, utility functions
+// config	- env variables, db
+// common - types and models
 // types	TS models & interfaces

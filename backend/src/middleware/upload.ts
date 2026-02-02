@@ -18,7 +18,6 @@ export const upload = multer({
   storage,
   limits: { fileSize: MAX_FILE_SIZE },
   fileFilter: (req, file, fileFilterCallback) => {
-    // const allowed = ['image/jpeg', 'image/png'];
     if (!ALLOWED_MIME_TYPES.includes(file.mimetype)) {
       return fileFilterCallback(new InvalidImageFormat());
     }

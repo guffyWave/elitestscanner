@@ -14,9 +14,32 @@ Docker v29.1.5
 
 Java v17.0.18
 
-### About -
 
-The project stack Node+Express+
+### About  
+
+The project use Node, Express, Postgres , React , React Native , TypeScript , Android SDK , iOS SDK
+
+Backend Folder Responsibility 
+- routes - express routing only
+- controllers -	Input/output, Validate request and make response ,
+- business - Image processing , QR Extraction
+- services	 - Data manipulation (Databse quries)
+- middleware - file upload
+- utils	- constants, errors, loggers, utility functions
+- config - env variables, db
+- common - types and models
+- types	TS models & interfaces
+
+
+
+App Folder Responsibility 
+- components -	small reusable component ,
+- business - resusable business logic, state management
+- services	 - Network communication, cache , database  fetch
+- container - 	Screens / Major component to hold components
+- hooks	-  Non-business reusable logic (not used)
+- common - colors, themes, fonts, strings,dimens
+- model - TS models & interfaces
 
 ### Steps -
 
