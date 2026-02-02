@@ -93,6 +93,9 @@ captures/
 !backend/tests/assets/qr-expired.png
 !backend/tests/assets/qr-inavalid.png
 !backend/tests/assets/qr-valid.png
+!screenshots/uploadapi.png
+!screenshots/getallteststrips.png
+!screenshots/getoneteststrip.png
 
 
 .Trash*
