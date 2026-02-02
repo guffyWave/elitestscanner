@@ -3,8 +3,6 @@ import path from 'path';
 import { ALLOWED_MIME_TYPES, MAX_FILE_SIZE } from '../utils/constants';
 import { InvalidImageFormat } from '../utils/errors';
 
-//@note todo -  test cases
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, '../../uploads'));

@@ -17,8 +17,6 @@ app.use('/api/test-strips', testStripsRoutes);
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 //http://localhost:3000/uploads/1769832544060-191518940.png
 
-//@note : todo deploy of GCP
-
 export default app;
 
 // Folder	Responsibility
