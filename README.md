@@ -163,6 +163,9 @@ App will be running . Make sure to increase the screen brightess if the QR is lo
 
 A few times , if QR is being scanned from a digital screen (laptop+ mobile) the QR code doesn't gets detected . Make sure to increase the screen brightess/contrast if the QR is located on digital screen .
 
+### Assumption & Notes
+ - Photos uploaded by user are intentionally not being deleted 
+
 ### Screenshots App
 
 <img src="/screenshots/app_one.png" alt="Scan Test Strip" width="300" height="600">

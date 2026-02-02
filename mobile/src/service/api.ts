@@ -1,5 +1,5 @@
 import { InternalServerError } from '../components/ErrorView';
-import { API_BASE_URL } from '../constants';
+import { API_BASE_URL } from '../commons/constants';
 import { TestStripSubmissionListResponse } from '../model/testStripSubmissionList';
 import axios, { AxiosResponse } from 'axios';
 

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Text, View, StyleSheet, Image } from 'react-native';
 import { ScanValidity, TestStripSubmissionItem } from '../model/testStripSubmissionList';
-import { API_BASE_URL } from '../constants';
+import { API_BASE_URL } from '../commons/constants';
 
 interface SubmissionListItemViewProps {
   item: TestStripSubmissionItem;
