@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     color: 'black',
   },
   listContainer: {
-    paddingVertical: 20,
+    // paddingTop: 20,
+    // paddingHorizontal: 20,
   },
 });

@@ -10,6 +10,10 @@ import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-
 import HomeScreen from './src/containers/HomeScreen';
 import TestStripSubmissionListScreen from './src/containers/TestStripSubmissionListScreen';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
+
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 

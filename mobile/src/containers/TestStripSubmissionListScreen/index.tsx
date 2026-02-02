@@ -20,8 +20,13 @@ interface TestStripSubmissionListScreenProps {
 
 const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = React.memo(
   ({ params }) => {
-    const { testStripSubmissionItemList, isLoading, errorMessage, fetchTestStripSubmissionList } =
-      useTestStripSubmission();
+    const {
+      testStripSubmissionItemList,
+      isLoading,
+      errorMessage,
+      fetchTestStripSubmissionList,
+      loadMore,
+    } = useTestStripSubmission();
 
     const ErrorView = lazy(() => import('../../components/ErrorView'));
 
@@ -49,6 +54,13 @@ const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = Re
           contentContainerStyle={styles.listContainer}
           refreshing={isLoading}
           onRefresh={fetchTestStripSubmissionList}
+          onEndReached={() => loadMore()}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isLoading && testStripSubmissionItemList?.length ? (
+              <ActivityIndicator size="small" />
+            ) : null
+          }
         />
       </SafeAreaView>
     );

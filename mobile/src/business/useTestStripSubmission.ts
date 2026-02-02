@@ -8,6 +8,8 @@ import { fetchTestStripsSubmisionAPI } from '../service/api';
 interface TestStripSubmissionListState {
   testStripSubmissionItemList: TestStripSubmissionItem[];
   isLoading: boolean;
+  page: number;
+  limit: number;
   errorMessage: string | null;
 }
 
@@ -15,11 +17,16 @@ const initialState: TestStripSubmissionListState = {
   testStripSubmissionItemList: [],
   isLoading: false,
   errorMessage: '',
+  page: 1,
+  limit: 10,
 };
 
 type Action =
   | { type: 'FETCH_SUBMISSIONS'; payload: object }
-  | { type: 'SUBMISSIONS_FETCH_SUCCEDED'; payload: TestStripSubmissionItem[] }
+  | {
+      type: 'SUBMISSIONS_FETCH_SUCCEDED';
+      payload: { list: TestStripSubmissionItem[]; page: number };
+    }
   | { type: 'SUBMISSIONS_FETCH_FAILED'; payload: string };
 
 const reducerFunction = (
@@ -33,8 +40,12 @@ const reducerFunction = (
       return {
         ...state,
         isLoading: false,
-        testStripSubmissionItemList: action.payload,
+        testStripSubmissionItemList:
+          action.payload.page === 1
+            ? action.payload.list
+            : [...state.testStripSubmissionItemList, ...action.payload.list],
         errorMessage: '',
+        page: action.payload.page,
       };
     case 'SUBMISSIONS_FETCH_FAILED':
       return { ...state, isLoading: false, errorMessage: action.payload };
@@ -48,10 +59,10 @@ export const useTestStripSubmission = () => {
 
   useDebugValue('Debug TestStripSubmission Hook');
 
-  const fetchTestStripSubmissionList = () => {
+  const fetchTestStripSubmissionList = (page: number = 1) => {
     dispatch({ type: 'FETCH_SUBMISSIONS', payload: {} });
 
-    fetchTestStripsSubmisionAPI()
+    fetchTestStripsSubmisionAPI(page, submissionsState.limit)
       .then((response: TestStripSubmissionListResponse | undefined) => {
         let submissionsList: TestStripSubmissionItem[] = [];
 
@@ -68,7 +79,7 @@ export const useTestStripSubmission = () => {
 
         dispatch({
           type: 'SUBMISSIONS_FETCH_SUCCEDED',
-          payload: submissionsList,
+          payload: { list: submissionsList, page },
         });
       })
       .catch((error) => {
@@ -78,13 +89,20 @@ export const useTestStripSubmission = () => {
   };
 
   useEffect(() => {
-    fetchTestStripSubmissionList();
+    fetchTestStripSubmissionList(1);
   }, []);
+
+  const loadMore = () => {
+    if (!submissionsState.isLoading) {
+      fetchTestStripSubmissionList(submissionsState.page + 1);
+    }
+  };
 
   return {
     testStripSubmissionItemList: submissionsState?.testStripSubmissionItemList,
     isLoading: submissionsState?.isLoading,
     errorMessage: submissionsState?.errorMessage,
-    fetchTestStripSubmissionList: fetchTestStripSubmissionList,
+    fetchTestStripSubmissionList: () => fetchTestStripSubmissionList(1),
+    loadMore,
   };
 };

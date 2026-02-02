@@ -1,12 +1,15 @@
 import { InternalServerError } from '../components/ErrorView';
 import { TestStripSubmissionListResponse } from '../model/testStripSubmissionList';
 
-export const fetchTestStripsSubmisionAPI = async (): Promise<
-  TestStripSubmissionListResponse | undefined
-> => {
+export const fetchTestStripsSubmisionAPI = async (
+  page: number,
+  limit: number
+): Promise<TestStripSubmissionListResponse | undefined> => {
   try {
     //http://10.242.231.225:3000/api/test-strips?page=1&limit=10
-    const res = await fetch('http://10.242.231.225:3000/api/test-strips?page=1&limit=10');
+    const res = await fetch(
+      'http://10.242.231.225:3000/api/test-strips?page=' + page + '&limit=' + limit
+    );
     if (!res?.ok) {
       throw new Error('Unable to fetch the data!');
     }
