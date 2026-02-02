@@ -1,9 +1,7 @@
 import React, { FC } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import {
-  ScanValidity,
-  TestStripSubmissionItem,
-} from '../model/testStripSubmissionList';
+import { ScanValidity, TestStripSubmissionItem } from '../model/testStripSubmissionList';
+import { API_BASE_URL } from '../constants';
 
 interface SubmissionListItemViewProps {
   item: TestStripSubmissionItem;
@@ -13,10 +11,7 @@ const SubmissionListItemView: FC<SubmissionListItemViewProps> = React.memo(({ it
   return (
     <View style={styles.card}>
       <View style={styles.thumbnailContainer}>
-        <Image
-          source={{ uri: 'http://10.242.231.225:3000/' + item?.thumbnail_path }}
-          style={styles.thumbnail}
-        />
+        <Image source={{ uri: API_BASE_URL + item?.thumbnail_path }} style={styles.thumbnail} />
         <Text style={styles.status(item.status)}>{item.status}</Text>
       </View>
       <View style={styles.rightSection}>

@@ -1,7 +1,6 @@
 import { InternalServerError } from '../components/ErrorView';
-import {
-  TestStripSubmissionListResponse,
-} from '../model/testStripSubmissionList';
+import { API_BASE_URL } from '../constants';
+import { TestStripSubmissionListResponse } from '../model/testStripSubmissionList';
 import axios, { AxiosResponse } from 'axios';
 
 export const fetchTestStripsSubmisionAPI = async (
@@ -9,10 +8,7 @@ export const fetchTestStripsSubmisionAPI = async (
   limit: number
 ): Promise<TestStripSubmissionListResponse | undefined> => {
   try {
-    //http://10.242.231.225:3000/api/test-strips?page=1&limit=10
-    const res = await fetch(
-      'http://10.242.231.225:3000/api/test-strips?page=' + page + '&limit=' + limit
-    );
+    const res = await fetch(API_BASE_URL + '/api/test-strips?page=' + page + '&limit=' + limit);
     if (!res?.ok) {
       throw new Error('Unable to fetch the data!');
     }
@@ -40,13 +36,9 @@ export const uploadScanImageAPI = async (imageUri: string) => {
       type: 'image/jpeg',
     } as any);
 
-    const response = await axios.post(
-      'http://10.242.231.225:3000/api/test-strips/upload',
-      formData,
-      {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      }
-    );
+    const response = await axios.post(API_BASE_URL + '/api/test-strips/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return response;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
