@@ -26,12 +26,9 @@ function App() {
 }
 
 function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
   return (
     <SafeAreaView style={styles.container}>
-      {/* <HomeScreen params={{}} /> */}
-      <TestStripSubmissionListScreen params={{}} />
+      <HomeScreen params={{}} />
     </SafeAreaView>
   );
 }

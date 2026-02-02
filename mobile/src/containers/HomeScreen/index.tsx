@@ -4,23 +4,30 @@ import { styles } from './HomeScreen.Styles';
 
 import QRScanner from '../../components/QRScanner';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import TestStripSubmissionListScreen from '../TestStripSubmissionListScreen';
 
 interface HomeScreenProps {
   params: object;
 }
 
-//<Image source={{ uri: 'https://picsum.photos/200/300' }} style={styles.image} />
-
 //todo ; create theme , font, color system
 //todo : strings file
 const HomeScreen: FC<HomeScreenProps> = React.memo(({ params }) => {
+  const [showHistory, setShowHistory] = useState<boolean>(false);
   return (
     <SafeAreaView style={styles.container}>
-      <QRScanner params={{}} />
+      <View style={styles.contentContainer}>
+        {showHistory ? <TestStripSubmissionListScreen params={{}} /> : <QRScanner params={{}} />}
+      </View>
       <View style={styles.titleHistoryContainer}>
         <Text style={styles.title}>Eli Test Scanner</Text>
-        <TouchableOpacity style={styles.secondaryButton}>
-          <Text style={styles.buttonText}>History</Text>
+        <TouchableOpacity
+          style={styles.secondaryButton}
+          onPress={() => {
+            setShowHistory(!showHistory);
+          }}
+        >
+          <Text style={styles.buttonText}> {showHistory ? 'Scanner' : 'History'} </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

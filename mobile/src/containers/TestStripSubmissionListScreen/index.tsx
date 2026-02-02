@@ -35,7 +35,7 @@ const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = Re
     );
 
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <Text style={styles.title}>Your scan history </Text>
         {isLoading && !testStripSubmissionItemList.length ? (
           <ActivityIndicator size={'large'} />
@@ -62,7 +62,7 @@ const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = Re
             ) : null
           }
         />
-      </SafeAreaView>
+      </View>
     );
   }
 );
