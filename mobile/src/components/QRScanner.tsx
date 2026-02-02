@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import {
   Text,
   View,
@@ -30,7 +30,7 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
 
   const cameraRef = useRef<Camera>(null);
   const devices = useCameraDevices();
-  const backCamera = devices.find((device) => device.position === 'back'); // find back camera
+  const backCamera = devices.find((device) => device.position === 'back'); // find's back camera
 
   useEffect(() => {
     (async () => {
@@ -38,6 +38,23 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
       setHasPermission(status === 'granted');
     })();
   }, []);
+
+  const renderUploadResponseBox = useCallback(() => {
+    if (!uploadResponse) return null;
+    return (
+      <ScrollView style={styles.uploadResponseBox}>
+        <Text style={styles.statusText(uploadResponse?.status)}>
+          Status: {uploadResponse?.status || ''}
+        </Text>
+        <Text style={styles.qrCodeText}>QR Code : {uploadResponse?.qrCode || ''}</Text>
+        <Text style={styles.qrCodeValidText}>
+          QR Code Valid : {uploadResponse?.qrCodeValid || ''}
+        </Text>
+        <Text style={styles.qualityText}>Quality : {uploadResponse?.quality || ''}</Text>
+        <Text style={styles.messageText}>Message : {uploadResponse?.message || ''}</Text>
+      </ScrollView>
+    );
+  }, [uploadResponse]);
 
   if (!hasPermission) {
     return (
@@ -67,7 +84,6 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
     const imageUri = `file://${data.path}`;
     setPhoto(imageUri);
 
-    // Compress using ImageResizer
     try {
       const resized = await ImageResizer.createResizedImage(
         imageUri,
@@ -88,21 +104,11 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
 
     setUploading(true);
 
-    // const formData = new FormData();
-    // formData.append('image', {
-    //   uri: compressedPhoto,
-    //   name: 'compressed-photo.jpg',
-    //   type: 'image/jpeg',
-    // } as any);
-
-    // be connect with hostpot and put ip address of machine runnig the backend
-    // cmd> ipconfig getifaddr en0
-
     try {
       const response = await uploadScanImageAPI(compressedPhoto);
       if (response?.status === 200) {
         setUploadResponse(response?.data);
-        Alert.alert('Success', 'NEW Image uploaded successfully!');
+        Alert.alert('Success', 'Image uploaded successfully!');
         setPhoto(null);
         setCompressedPhoto(null);
       } else {
@@ -149,20 +155,7 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
           </TouchableOpacity>
         </View>
       )}
-
-      {uploadResponse ? (
-        <ScrollView style={styles.uploadResponseBox}>
-          <Text style={styles.statusText(uploadResponse?.status)}>
-            Status: {uploadResponse?.status || ''}
-          </Text>
-          <Text style={styles.qrCodeText}>QR Code : {uploadResponse?.qrCode || ''}</Text>
-          <Text style={styles.qrCodeValidText}>
-            QR Code Valid : {uploadResponse?.qrCodeValid || ''}
-          </Text>
-          <Text style={styles.qualityText}>Quality : {uploadResponse?.quality || ''}</Text>
-          <Text style={styles.messageText}>Message : {uploadResponse?.message || ''}</Text>
-        </ScrollView>
-      ) : null}
+      {uploadResponse ? renderUploadResponseBox() : null}
     </View>
   );
 });
