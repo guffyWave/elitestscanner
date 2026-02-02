@@ -11,7 +11,10 @@ const SubmissionListItemView: FC<SubmissionListItemViewProps> = React.memo(({ it
   return (
     <View style={styles.card}>
       <View style={styles.thumbnailContainer}>
-        <Image source={{ uri: API_BASE_URL + item?.thumbnail_path }} style={styles.thumbnail} />
+        <Image
+          source={{ uri: API_BASE_URL + '/' + item?.thumbnail_path }}
+          style={styles.thumbnail}
+        />
         <Text style={styles.status(item.status)}>{item.status}</Text>
       </View>
       <View style={styles.rightSection}>

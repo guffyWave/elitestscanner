@@ -142,15 +142,17 @@ Make sure to enable Android USB debugging in Physical real android device . And 
 
 Apps can't connect with localhost, so IP address has to be be set in the mobile app client code .
 
-Execute 'ipconfig getifaddr en0' to get local machine IP addess where the backend server is running.
+Execute 'ipconfig getifaddr en0' to get local machine IP addess where the backend server is running. Many times firewall or the Wifi router doesn't let Phone connect with local server. So , in order to by pass this , disconnect from Wifi and create a Hotspot on Mobile and connect Machine with Hotspot.
 
 Then search in project 'API_BASE_URL' and change the IP adrress to the obtained
+
+ adb reverse tcp:8081 tcp:8081
 
 Now execute
 
     npx react-native run-android
 
-App will be running !
+App will be running . Make sure to increase the screen brightess if thw QR is located on digital screen .
 
 ### Screenshots
 
