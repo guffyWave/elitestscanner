@@ -26,55 +26,55 @@ export class QRService {
     };
 
     try {
-      const image = sharp(filePath);
+      //  Preprocessing to improve QR recognition
+      let image = sharp(filePath)
+        .resize(1000, 1000, { fit: 'inside' })
+        .median(1) // denoise
+        .sharpen({ sigma: 1.2 }) // increase edges
+        .linear(1.5, -30) // increase contrast
+        .gamma(1.8) // darken darks
+        .threshold(130); // convert to B/W
+
       const { data, info } = await image.raw().ensureAlpha().toBuffer({ resolveWithObject: true });
 
-      const qr: QRCode | null = jsQR(new Uint8ClampedArray(data), info.width, info.height);
+      const qr = jsQR(new Uint8ClampedArray(data), info.width, info.height);
 
       if (!qr) {
-        qrScanResult = {
+        return {
           qrCode: '',
           valid: ScanValidity.INVALID,
           errorMessage: ERROR_CODES.QR.NOT_FOUND.description,
         };
-        return qrScanResult;
-        // throw new QRCodeNotFound(); // alternativly throw an error
       }
 
-      const qrText: string = qr?.data.trim() || '';
+      const qrText = qr.data.trim();
 
-      // Basic validation (format: ELI-YYYY-XXX)
-      const match = qrText?.match(ELI_QR_VALIDATION_REFEX);
-
+      // Validate format
+      const match = qrText.match(ELI_QR_VALIDATION_REFEX);
       if (!match) {
-        qrScanResult = {
+        return {
           qrCode: qrText,
           valid: ScanValidity.INVALID,
           errorMessage: ERROR_CODES.QR.INVALID_QR.description,
         };
-        return qrScanResult;
-        // throw new InvalidQRCode(); // alternativly throw an error
       }
 
-      // Year expiration constraint
-      const year: number = parseInt(match[1]);
+      // Year validation
+      const year = parseInt(match[1], 10);
       if (isNaN(year) || year < LAST_QR_YEAR_ALLOWED) {
-        qrScanResult = {
+        return {
           qrCode: qrText,
           valid: ScanValidity.EXPIRED,
           errorMessage: ERROR_CODES.QR.EXPIRED_QR.description,
         };
-        return qrScanResult;
-        // throw new ExpiredQRCode();  // alternativly throw an error
       }
 
-      qrScanResult = {
+      //Success
+      return {
         qrCode: qrText,
         valid: ScanValidity.VALID,
         errorMessage: '',
       };
-
-      return qrScanResult;
     } catch (error) {
       logger.error('QR extraction error:', error);
       return qrScanResult;
