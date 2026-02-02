@@ -35,3 +35,13 @@ export type TestStripSubmissionItem = Pick<
   TestStripSubmissionModel,
   'id' | 'qr_code' | 'status' | 'thumbnail_path' | 'created_at' | 'error_message'
 >;
+
+export interface UploadImageResponseModel {
+  id: string;
+  status: ScanValidity;
+  qrCode: string;
+  qrCodeValid: string;
+  quality: string; // or narrow if you have known values
+  processedAt: string; // or Date if you parse it
+  message: string;
+}

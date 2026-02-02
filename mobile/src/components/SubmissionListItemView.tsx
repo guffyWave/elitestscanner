@@ -1,6 +1,9 @@
 import React, { FC } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { ScanValidity, TestStripSubmissionItem } from '../model/testStripSubmissionList';
+import {
+  ScanValidity,
+  TestStripSubmissionItem,
+} from '../model/testStripSubmissionList';
 
 interface SubmissionListItemViewProps {
   item: TestStripSubmissionItem;

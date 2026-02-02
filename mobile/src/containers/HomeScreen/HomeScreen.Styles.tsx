@@ -9,19 +9,17 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   title: {
-    fontSize: 36,
+    fontSize: 20,
     fontWeight: '700',
     marginTop: 30,
     color: 'black',
   },
- 
-  
+
   secondaryButton: {
     backgroundColor: '#34C759',
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 8,
-    marginTop: 30,
+    marginTop: 5,
   },
- 
 });

@@ -12,6 +12,7 @@ import { styles } from './TestStripSubmissionListScreen.Styles';
 import { useTestStripSubmission } from '../../business/useTestStripSubmission';
 import SubmissionListItemView from '../../components/SubmissionListItemView';
 import { TestStripSubmissionItem } from '../../model/testStripSubmissionList';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface TestStripSubmissionListScreenProps {
   params: object;
@@ -31,7 +32,7 @@ const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = Re
     // lazy loading
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Your scan history </Text>
         {isLoading ? <ActivityIndicator size={'large'} /> : null}
 
@@ -47,7 +48,7 @@ const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = Re
           renderItem={renderItem}
           contentContainerStyle={styles.listContainer}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 );
