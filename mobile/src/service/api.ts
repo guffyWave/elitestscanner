@@ -1,5 +1,8 @@
 import { InternalServerError } from '../components/ErrorView';
-import { TestStripSubmissionListResponse } from '../model/testStripSubmissionList';
+import {
+  TestStripSubmissionListResponse,
+} from '../model/testStripSubmissionList';
+import axios, { AxiosResponse } from 'axios';
 
 export const fetchTestStripsSubmisionAPI = async (
   page: number,
@@ -23,5 +26,30 @@ export const fetchTestStripsSubmisionAPI = async (
     throw new Error(
       `Something went wrong. Make sure you are connected with internet. Error:` + message
     );
+  }
+};
+
+/// be connect with hostpot and put ip address of machine runnig the backend
+// cmd> ipconfig getifaddr en0
+export const uploadScanImageAPI = async (imageUri: string) => {
+  try {
+    const formData = new FormData();
+    formData.append('image', {
+      uri: imageUri,
+      name: 'compressed-photo.jpg',
+      type: 'image/jpeg',
+    } as any);
+
+    const response = await axios.post(
+      'http://10.242.231.225:3000/api/test-strips/upload',
+      formData,
+      {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }
+    );
+    return response;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Something went wrong: ` + message);
   }
 };

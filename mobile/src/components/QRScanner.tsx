@@ -14,6 +14,7 @@ import ImageResizer from 'react-native-image-resizer';
 import axios from 'axios';
 import { Dimensions } from 'react-native';
 import { UploadImageResponseModel } from '../model/testStripSubmissionList';
+import { uploadScanImageAPI } from '../service/api';
 
 interface QRScannerProps {
   params: object;
@@ -87,28 +88,26 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
 
     setUploading(true);
 
-    const formData = new FormData();
-    formData.append('image', {
-      uri: compressedPhoto,
-      name: 'compressed-photo.jpg',
-      type: 'image/jpeg',
-    } as any);
+    // const formData = new FormData();
+    // formData.append('image', {
+    //   uri: compressedPhoto,
+    //   name: 'compressed-photo.jpg',
+    //   type: 'image/jpeg',
+    // } as any);
+
     // be connect with hostpot and put ip address of machine runnig the backend
     // cmd> ipconfig getifaddr en0
 
     try {
-      const response = await axios.post(
-        'http://10.242.231.225:3000/api/test-strips/upload',
-        formData,
-        {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        }
-      );
-      setUploadResponse(response?.data);
-
-      Alert.alert('Success', 'Image uploaded successfully!');
-      setPhoto(null);
-      setCompressedPhoto(null);
+      const response = await uploadScanImageAPI(compressedPhoto);
+      if (response?.status === 200) {
+        setUploadResponse(response?.data);
+        Alert.alert('Success', 'NEW Image uploaded successfully!');
+        setPhoto(null);
+        setCompressedPhoto(null);
+      } else {
+        Alert.alert('Error', 'Failed to upload image');
+      }
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to upload image' + error);
