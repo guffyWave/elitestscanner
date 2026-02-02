@@ -1,42 +1,41 @@
 import { StyleSheet } from 'react-native';
-import { COLORS } from '../../commons/colors';
-import { FONT_SIZES, FONT_WEIGHTS } from '../../commons/fonts';
+import theme from '../../commons/theme';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: theme.colors.WHITE,
   },
   contentContainer: {
     flex: 1,
     maxHeight: '95%',
   },
   title: {
-    fontSize: FONT_SIZES.LARGE,
-    fontWeight: FONT_WEIGHTS.BOLD,
-    color: COLORS.BLACK,
+    fontSize: theme.fonts.sizes.LARGE,
+    fontWeight: theme.fonts.weights.BOLD,
+    color: theme.colors.BLACK,
   },
   titleHistoryContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.WHITE,
-    marginHorizontal: 16,
-    marginTop: 12,
+    backgroundColor: theme.colors.WHITE,
+    marginHorizontal: theme.dimensions.MARGIN_HORIZONTAL_MEDIUM,
+    marginTop: theme.dimensions.MARGIN_VERTICAL_MEDIUM,
   },
   buttonText: {
-    color: COLORS.WHITE,
-    fontSize: FONT_SIZES.SMALL,
-    fontWeight: FONT_WEIGHTS.SEMI_BOLD,
+    color: theme.colors.WHITE,
+    fontSize: theme.fonts.sizes.SMALL,
+    fontWeight: theme.fonts.weights.SEMI_BOLD,
   },
   secondaryButton: {
-    backgroundColor: COLORS.PRIMARY_BLUE,
-    paddingVertical: 8,
-    height: 40,
-    marginHorizontal: 16,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    marginTop: 5,
+    backgroundColor: theme.colors.PRIMARY_BLUE,
+    paddingVertical: theme.dimensions.PADDING_VERTICAL_SMALL,
+    height: theme.dimensions.BUTTON_HEIGHT,
+    marginHorizontal: theme.dimensions.MARGIN_HORIZONTAL_MEDIUM,
+    paddingHorizontal: theme.dimensions.PADDING_HORIZONTAL_SMALL,
+    borderRadius: theme.dimensions.BORDER_RADIUS_SMALL,
+    marginTop: theme.dimensions.MARGIN_VERTICAL_X_SMALL,
   },
 });
