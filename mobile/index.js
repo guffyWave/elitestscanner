@@ -18,7 +18,7 @@ AppRegistry.registerComponent(appName, () => App);
 // model - TS models & interfaces
 
 //@note Changes for Production readiness -
-// Lottie Animation - User Education, Gamification ,
+// Lottie Animation - User Education, Gamification , Interaction Reward etc
 // Analytics  Framework Clevertap,Mixpanel,Firebase ,etc - funnel analysis on capture-upload-result
 // Add Firebase Crashlytics - for crashes & non-fatals
 // Firebase Performance

@@ -37,5 +37,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: theme.dimensions.PADDING_HORIZONTAL_SMALL,
     borderRadius: theme.dimensions.BORDER_RADIUS_SMALL,
     marginTop: theme.dimensions.MARGIN_VERTICAL_X_SMALL,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

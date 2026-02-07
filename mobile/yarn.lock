@@ -4739,6 +4739,11 @@ loose-envify@^1.0.0, loose-envify@^1.4.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
+lottie-react-native@^7.3.5:
+  version "7.3.5"
+  resolved "https://registry.npmjs.org/lottie-react-native/-/lottie-react-native-7.3.5.tgz"
+  integrity sha512-5VPrHGbEmpNxrcEfmxyFZBvDksMaZ6LhyQZL0S0VIDwMRVrhGwOZQZKVFSEFU5HxNuDjxm/vPSoEhlKKfbYKHw==
+
 lru-cache@^5.1.1:
   version "5.1.1"
   resolved "https://registry.npmjs.org/lru-cache/-/lru-cache-5.1.1.tgz"
@@ -5524,7 +5529,7 @@ react-native-vision-camera@^4.7.3:
   resolved "https://registry.npmjs.org/react-native-vision-camera/-/react-native-vision-camera-4.7.3.tgz"
   integrity sha512-g1/neOyjSqn1kaAa2FxI/qp5KzNvPcF0bnQw6NntfbxH6tm0+8WFZszlgb5OV+iYlB6lFUztCbDtyz5IpL47OA==
 
-react-native@*, react-native@>=0.71, react-native@>=v0.40.0, react-native@0.83.1:
+react-native@*, react-native@>=0.46, react-native@>=0.71, react-native@>=v0.40.0, react-native@0.83.1:
   version "0.83.1"
   resolved "https://registry.npmjs.org/react-native/-/react-native-0.83.1.tgz"
   integrity sha512-mL1q5HPq5cWseVhWRLl+Fwvi5z1UO+3vGOpjr+sHFwcUletPRZ5Kv+d0tUfqHmvi73/53NjlQqX1Pyn4GguUfA==

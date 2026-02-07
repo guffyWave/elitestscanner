@@ -12,9 +12,11 @@ import { Camera, useCameraDevices } from 'react-native-vision-camera';
 import { Image } from 'react-native';
 import ImageResizer from 'react-native-image-resizer';
 import axios from 'axios';
+import LottieView from 'lottie-react-native';
 import { Dimensions } from 'react-native';
 import { UploadImageResponseModel } from '../model/testStripSubmissionList';
 import { uploadScanImageAPI } from '../service/api';
+import theme from '../commons/theme';
 
 interface QRScannerProps {
   params: object;
@@ -28,6 +30,7 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
   const [compressedPhoto, setCompressedPhoto] = useState<string | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
   const [uploadResponse, setUploadResponse] = useState<UploadImageResponseModel | null>(null);
+  const [animationFinished, setAnimationFinished] = useState(false);
 
   const cameraRef = useRef<Camera>(null);
   const devices = useCameraDevices();
@@ -57,21 +60,21 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
     );
   }, [uploadResponse]);
 
-  if (!hasPermission) {
-    return (
-      <View style={styles.center}>
-        <Text>Please grant camera permission</Text>
-      </View>
-    );
-  }
+  // if (!hasPermission) {
+  //   return (
+  //     <View style={styles.center}>
+  //       <Text>Please grant camera permission</Text>
+  //     </View>
+  //   );
+  // }
 
-  if (!backCamera) {
-    return (
-      <View style={styles.center}>
-        <Text>This device does not support camera</Text>
-      </View>
-    );
-  }
+  // if (!backCamera) {
+  //   return (
+  //     <View style={styles.center}>
+  //       <Text>This device does not support camera</Text>
+  //     </View>
+  //   );
+  // }
 
   const takePhoto = async () => {
     if (!cameraRef.current) return;
@@ -134,15 +137,35 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
           <Image source={{ uri: photo }} style={styles.previewImage} />
         </View>
       ) : (
-        <Camera
-          ref={cameraRef}
-          style={styles.cameraBox}
-          device={backCamera}
-          isActive={true}
-          photo={true}
-          enableZoomGesture
-          exposure={0}
-        />
+        <View style={styles.cameraBoxContainer}>
+          {true ? (
+            <View style={styles.capturedBox}>
+              {!animationFinished ? (
+                <LottieView
+                  //source={require('../animation/camera_pop_up.json')}
+                  source={require('../animation/qr_scanning.json')}
+                  autoPlay
+                  loop={false}
+                  onAnimationFinish={() => setAnimationFinished(true)}
+                  style={{ width: 200, height: 200, backgroundColor: theme.colors.BLACK }}
+                />
+              ) : null}
+            </View>
+          ) : null}
+          {backCamera ? (
+            <Camera
+              ref={cameraRef}
+              style={styles.cameraBox}
+              device={backCamera}
+              isActive={true}
+              photo={true}
+              enableZoomGesture
+              exposure={0}
+            />
+          ) : (
+            <Text style={styles.cameraNotSupported}>This device does not support camera</Text>
+          )}
+        </View>
       )}
 
       {!compressedPhoto ? (
@@ -160,7 +183,19 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
           </TouchableOpacity>
         </View>
       )}
-      {uploadResponse ? renderUploadResponseBox() : null}
+      {uploadResponse ? (
+        renderUploadResponseBox()
+      ) : animationFinished ? (
+        <View style={styles.userEducationBox}>
+          <LottieView
+            //source={require('../animation/camera_pop_up.json')}
+            source={require('../animation/qr_scanning.json')}
+            autoPlay
+            loop={true}
+            style={{ width: 100, height: 100, backgroundColor: theme.colors.BLACK }}
+          />
+        </View>
+      ) : null}
     </View>
   );
 });
@@ -175,6 +210,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 10,
   },
+  cameraNotSupported: {
+    fontSize: theme.fonts.sizes.LARGE,
+    color: theme.colors.WHITE,
+    textAlign: 'center',
+  },
   cameraBox: {
     width: DEVICE_WIDTH,
     height: DEVICE_WIDTH,
@@ -182,6 +222,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   capturedBox: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 16,
+    backgroundColor: '#000',
+  },
+  cameraBoxContainer: {
     width: 0.9 * DEVICE_WIDTH,
     height: 0.9 * DEVICE_WIDTH,
     borderWidth: 2,
@@ -191,6 +237,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     margin: 16,
+    backgroundColor: '#000',
+  },
+
+  userEducationBox: {
+    width: 0.9 * DEVICE_WIDTH,
+    //height: 0.9 * DEVICE_WIDTH,
+    // borderWidth: 2,
+    // borderStyle: 'dashed',
+    // borderColor: '#999',
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 16,
+    backgroundColor: '#000',
   },
   previewImage: {
     width: 0.8 * DEVICE_WIDTH,
