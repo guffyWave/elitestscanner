@@ -58,11 +58,10 @@ await bucket.file(destination).makePublic();
 /*
 Microservice architecture - folder structure 
  /microservices
-    /api-gateway    --->  axios.post("http://qr-service:4001/scan",{ filePath });
+    /api-gateway   --->  axios.post("http://qr-service:4001/scan",{ filePath });
     /qr-service  --> endpoint '/scan' --> QRService.extractQR(filePath);
     /db-service
-    /file-service
-    /common (shared types, utils)
+    /image-service
 
     Each microservice will have:
     Dockerfile
