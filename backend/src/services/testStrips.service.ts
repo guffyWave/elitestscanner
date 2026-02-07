@@ -29,11 +29,14 @@ export async function insertTestStripSubmission(data: TestStripSubmissionRecord)
   return result.rows[0];
 }
 
+//3. Redis Cache // new Redis({host,port});
 export async function getAllTestStripSubmissions(
   page: number,
   limit: number
 ): Promise<TestStripSubmissionsPageResponseModel | undefined> {
   try {
+    //  await redis.get(CACHE_KEY); JSON.parse(cached)
+
     const offset = (page - 1) * limit;
 
     const listQuery = `
@@ -50,6 +53,8 @@ export async function getAllTestStripSubmissions(
       pool.query(listQuery, [limit, offset]),
       pool.query(countQuery),
     ]);
+
+    //await redis.set(CACHE_KEY, JSON.stringify(rows), "EX", CACHE_TTL);
 
     return {
       data: listResult.rows,

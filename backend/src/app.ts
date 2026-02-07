@@ -8,8 +8,10 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+//@note Improvement Use Payload compression / zlib  // app.use(compression())  // require('compression');
 
 app.use('/', welcomeRoutes);
+//@note Improvement - versioning for backward compatability.  /api/v1/test-strips
 app.use('/api/test-strips', testStripsRoutes);
 
 // Serving uploads folder publicly from the Node server for development purposes only.
@@ -29,3 +31,20 @@ export default app;
 // config	- env variables, db
 // common - types and models
 // types	TS models & interfaces
+
+
+//
+
+//Improvements -
+//Use testStripsRoutes GraphQL endpoint  - '@apollo/server typeDef resolver Mutation/Query' for many small queries,  api is complex and expanding
+// Use Rate limiting with testStripsRoutes express-rate-limit , fastify-rate-limit , Nginx rate-limiting
+
+//Async Logging
+//Redis cache  - caching 
+//Payload compression
+//Connection pool
+
+//TOON over JSON
+
+//Horizontal scaling - add more server --- authentication server down , downs other module
+// Microservice architecture

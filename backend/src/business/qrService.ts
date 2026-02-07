@@ -1,14 +1,7 @@
 import fs from 'fs';
 import sharp from 'sharp';
 import jsQR, { QRCode } from 'jsqr';
-import {
-  EliHealthError,
-  ERROR_CODES,
-  ExpiredQRCode,
-  InvalidQRCode,
-  QRCodeNotFound,
-  SomethingWentWrong,
-} from '../utils/errors';
+import { ERROR_CODES } from '../utils/errors';
 import { QRScanResult, ScanValidity } from '../common/types';
 import { ELI_QR_VALIDATION_REFEX, LAST_QR_YEAR_ALLOWED } from '../utils/constants';
 import { logger } from '../utils/logger';
@@ -17,7 +10,6 @@ import { logger } from '../utils/logger';
 //Flow: User uploads file → API stores file  → API enqueues job → Redis → Worker process picks job → Worker does heavy processing, stores processed file  → Client polls or uses WebSocket to get status
 //However, for now  doing CPU-heavy QR processing in the request itself
 export class QRService {
-  //todo see any downside of making this static
   static async extractQR(filePath: string): Promise<QRScanResult | null> {
     let qrScanResult: QRScanResult | null = {
       qrCode: '',

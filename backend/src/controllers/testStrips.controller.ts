@@ -21,6 +21,8 @@ import { RESPONSE_MESSAGE_FAILED_QR, RESPONSE_MESSAGE_SUCCESS } from '../utils/c
 import { logger } from '../utils/logger';
 import { isValidUUID } from '../utils/utility';
 
+//@note Improvement
+///Express API → BullMQ Queue → Worker Thread → Result stored in Redis
 export async function uploadTestStrip(
   req: Request,
   res: Response<TestStripSubmissionUploadResponse>
@@ -39,6 +41,12 @@ export async function uploadTestStrip(
     }
 
     logger.info('Image upload started - ', req.file?.originalname);
+
+    //@note Improvement
+    //Express receives request --> adds job to Redis queue  //  {Queue}  = require("bullmq"); // job = await queue.add("process", { imageData });
+    //BullMQ Worker will picks job -> sends data to Worker Thread //  { Worker } = require("bullmq")  { Worker: ThreadWorker } = require("worker_threads") worker.postMessage(data);
+    //Worker Thread doing actual CPU-heavy work  //  { parentPort } = require("worker_threads") parentPort.on("message", ({ para }) => { //.... parentPort.postMessage(result)});
+    //result will returned and stored in Redis  // queue.getJob(jobId).result
 
     //QR Extraction
     qrScanResult = await QRService.extractQR(filePath);
@@ -88,6 +96,10 @@ export async function uploadTestStrip(
   }
 }
 
+//@note Improvement - Use testStripsRoutes GraphQL endpoint
+// 1. '@apollo/server typeDef resolver Mutation/Query' for many small queries,  api is complex and expanding
+//2. Use Rate limiting with testStripsRoutes express-rate-limit , fastify-rate-limit , Nginx rate-limiting
+//3. Redis Cache // new Redis({host,port});
 export async function getAllTestStripSubmissions(req: Request, res: Response) {
   const page = parseInt(req.query.page as string) || 1; // default 1
   const limit = parseInt(req.query.limit as string) || 10; // default 10
