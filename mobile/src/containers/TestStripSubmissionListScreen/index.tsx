@@ -28,6 +28,7 @@ const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = Re
       loadMore,
     } = useTestStripSubmission();
 
+    //@note Code spliting - Lazily loading compoenent which is very less likely to be called
     const ErrorView = lazy(() => import('../../components/ErrorView'));
 
     const renderItem = ({ item }: { item: TestStripSubmissionItem }) => (

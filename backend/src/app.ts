@@ -32,19 +32,40 @@ export default app;
 // common - types and models
 // types	TS models & interfaces
 
-
 //
 
 //Improvements -
 //Use testStripsRoutes GraphQL endpoint  - '@apollo/server typeDef resolver Mutation/Query' for many small queries,  api is complex and expanding
 // Use Rate limiting with testStripsRoutes express-rate-limit , fastify-rate-limit , Nginx rate-limiting
-
 //Async Logging
-//Redis cache  - caching 
+//Redis cache  - caching
 //Payload compression
 //Connection pool
 
 //TOON over JSON
 
-//Horizontal scaling - add more server --- authentication server down , downs other module
-// Microservice architecture
+/*
+File upload to CDN GCS/ Akamai
+GCS Bucket - @google-cloud/storage  'elihealth-test-strips-uploads'
+bucket.upload
+await bucket.file(destination).makePublic();
+*/
+
+/* Monolith Architecture 
+ Horizontal scaling - add more server --- one module downs , downs other module
+*/
+
+/*
+Microservice architecture - folder structure 
+ /microservices
+    /api-gateway    --->  axios.post("http://qr-service:4001/scan",{ filePath });
+    /qr-service  --> endpoint '/scan' --> QRService.extractQR(filePath);
+    /db-service
+    /file-service
+    /common (shared types, utils)
+
+    Each microservice will have:
+    Dockerfile
+    src/
+    package.json
+*/

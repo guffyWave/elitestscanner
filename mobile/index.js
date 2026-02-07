@@ -16,3 +16,13 @@ AppRegistry.registerComponent(appName, () => App);
 // hooks	-  Non-business reusable logic (not used)
 // common - colors, themes, fonts, strings,dimens
 // model - TS models & interfaces
+
+//@note Changes for Production readiness -
+// Add Firebase Crashlytics
+// Firebase Performance
+// Analytics  Framework Clevertap,Mixpanel,Firebase ,etc - funnel analysis on capture-upload-result
+// CDN Image scaling
+// Firebase Remote Config for app level configs
+// Netwrok Info @react-native-community/netinfo for connectivity
+// Offline capability - Realm , Redux-Saga
+// RN Dev tools - report screenshot

@@ -13,6 +13,15 @@ import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 
+/*
+Atomic Principles 
+
+Atoms -  TextView, TouchableOpacity, Buttons
+Molecules - Home
+Organism - ErrorView , QRScanner, SubmissionListItemView
+Pages - HomeSceen, TestStripSubmissionListScreen
+*/
+
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 

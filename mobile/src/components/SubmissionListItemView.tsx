@@ -11,6 +11,11 @@ const SubmissionListItemView: FC<SubmissionListItemViewProps> = React.memo(({ it
   return (
     <View style={styles.card}>
       <View style={styles.thumbnailContainer}>
+        {/*  @note Improvement 
+          Convert to FastImage  
+          Better use SVG , WEBP, PNG
+          Scale webp/png based on client  https://newassets.apollo247.com/images/banners/mweb_First3.jpg?imwidth=200
+        */}
         <Image
           source={{ uri: API_BASE_URL + '/' + item?.thumbnail_path }}
           style={styles.thumbnail}

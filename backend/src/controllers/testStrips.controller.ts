@@ -21,7 +21,7 @@ import { RESPONSE_MESSAGE_FAILED_QR, RESPONSE_MESSAGE_SUCCESS } from '../utils/c
 import { logger } from '../utils/logger';
 import { isValidUUID } from '../utils/utility';
 
-//@note Improvement
+//@note Improvement - in case of long image processing / qr extraction
 ///Express API → BullMQ Queue → Worker Thread → Result stored in Redis
 export async function uploadTestStrip(
   req: Request,
@@ -42,11 +42,12 @@ export async function uploadTestStrip(
 
     logger.info('Image upload started - ', req.file?.originalname);
 
-    //@note Improvement
+    //@note Improvement - in case image processing or qr extraction is taking too long
     //Express receives request --> adds job to Redis queue  //  {Queue}  = require("bullmq"); // job = await queue.add("process", { imageData });
     //BullMQ Worker will picks job -> sends data to Worker Thread //  { Worker } = require("bullmq")  { Worker: ThreadWorker } = require("worker_threads") worker.postMessage(data);
     //Worker Thread doing actual CPU-heavy work  //  { parentPort } = require("worker_threads") parentPort.on("message", ({ para }) => { //.... parentPort.postMessage(result)});
     //result will returned and stored in Redis  // queue.getJob(jobId).result
+    // return result as GCM , webSockets or polling to user 
 
     //QR Extraction
     qrScanResult = await QRService.extractQR(filePath);
