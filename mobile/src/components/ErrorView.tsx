@@ -31,6 +31,7 @@ const ErrorView: FC<ErrorViewProps> = React.memo(({ message }) => {
   );
 });
 
+//@note - Use dimension , color , font etc from theme
 const styles = StyleSheet.create({
   container: {
     margin: 32,

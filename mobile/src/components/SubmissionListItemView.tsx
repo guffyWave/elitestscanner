@@ -38,6 +38,7 @@ const SubmissionListItemView: FC<SubmissionListItemViewProps> = React.memo(({ it
   );
 });
 
+//@note - Use dimension , color , font etc from theme
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',

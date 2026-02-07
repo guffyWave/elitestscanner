@@ -18,11 +18,13 @@ AppRegistry.registerComponent(appName, () => App);
 // model - TS models & interfaces
 
 //@note Changes for Production readiness -
-// Add Firebase Crashlytics
-// Firebase Performance
+// Lottie Animation - User Education, Gamification ,
 // Analytics  Framework Clevertap,Mixpanel,Firebase ,etc - funnel analysis on capture-upload-result
+// Add Firebase Crashlytics - for crashes & non-fatals
+// Firebase Performance
 // CDN Image scaling
 // Firebase Remote Config for app level configs
 // Netwrok Info @react-native-community/netinfo for connectivity
 // Offline capability - Realm , Redux-Saga
-// RN Dev tools - report screenshot
+// Performance , RN Dev tools - report screenshot
+// Deeplink setup - eli - Universal  Link (https://eli.health/your-test-strips)  & URL (elihealth://your-test-strips )(Scheme AndroidManifest.xml & Info.plist

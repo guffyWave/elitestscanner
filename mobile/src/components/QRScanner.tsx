@@ -23,9 +23,10 @@ const DEVICE_WIDTH = Dimensions.get('window').width;
 
 const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
   const [hasPermission, setHasPermission] = useState(false);
+  // @note - Improvement - club related states to decrease overall number of sates for improved rendering
   const [photo, setPhoto] = useState<string | null>(null);
   const [compressedPhoto, setCompressedPhoto] = useState<string | null>(null);
-  const [uploading, setUploading] = useState(false);
+  const [uploading, setUploading] = useState<boolean>(false);
   const [uploadResponse, setUploadResponse] = useState<UploadImageResponseModel | null>(null);
 
   const cameraRef = useRef<Camera>(null);
@@ -95,6 +96,9 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
       setCompressedPhoto(resized.uri);
     } catch (err) {
       console.error('Image resize error', err);
+
+      //@note - todo : Send the erorr log to crshtlytics non-fatal
+      //@note  - todo :Use custom dialog for better user communication
       Alert.alert('Error', 'Failed to compress image');
     }
   };
@@ -108,6 +112,7 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
       const response = await uploadScanImageAPI(compressedPhoto);
       if (response?.status === 200) {
         setUploadResponse(response?.data);
+        //@note  - todo :Use custom dialog for better user communication
         Alert.alert('Success', 'Image uploaded successfully!');
         setPhoto(null);
         setCompressedPhoto(null);
@@ -160,6 +165,7 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
   );
 });
 
+//@note - Use dimension , color , font etc from theme
 const styles = StyleSheet.create({
   captureContainer: {
     alignItems: 'center',
