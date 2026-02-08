@@ -1,0 +1,63 @@
+//---------------
+// Database Config  --->
+//---------------
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+//------------------
+// Enums (for  models) --->
+//--------------------
+
+enum ScanValidity {
+  VALID
+  INVALID
+  EXPIRED
+}
+
+enum QRScanQuality {
+  GOOD
+  BAD
+  UNKNOWN
+  NA
+}
+
+// ---------
+// ENTITIES --->
+// ------------
+
+// Normalized table for QR tracking --->
+model QrCode {
+  qrCode      String   @id
+  createdAt   DateTime @default(now())
+  lastSeenAt  DateTime @default(now())
+  status      ScanValidity
+  submissions TestStripSubmission[]
+}
+
+// Submissions Table (Main Entity)---->>
+
+model TestStripSubmission {
+  id                String         @id @default(uuid())
+  qr_code           String
+  status            ScanValidity
+  quality           QRScanQuality
+  thumbnail_path    String
+  original_image_path String
+  image_size        Int
+  image_dimensions  String
+  error_message     String?
+  created_at        DateTime        @default(now())
+
+  // RELATION
+  qrCodeModel QrCode @relation(fields: [qr_code], references: [qrCode])
+
+  @@index([qr_code])
+  @@index([created_at])
+}
