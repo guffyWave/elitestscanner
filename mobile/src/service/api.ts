@@ -2,21 +2,25 @@ import { InternalServerError } from '../components/ErrorView';
 import { API_BASE_URL } from '../commons/constants';
 import { TestStripSubmissionListResponse } from '../model/testStripSubmissionList';
 import axios, { AxiosResponse } from 'axios';
+import { SAMPLE_RESPONSE } from './sampleResponse';
 
 export const fetchTestStripsSubmisionAPI = async (
   page: number,
   limit: number
 ): Promise<TestStripSubmissionListResponse | undefined> => {
   try {
-    const res = await fetch(API_BASE_URL + '/api/test-strips?page=' + page + '&limit=' + limit);
-    if (!res?.ok) {
-      throw new Error('Unable to fetch the data!');
-    }
-    if (res?.status === 500) {
-      throw new InternalServerError('Something broke at our end !. We will fix shortly');
-    }
-    const data: TestStripSubmissionListResponse = await res.json();
-    return data;
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    return SAMPLE_RESPONSE;
+
+    // const res = await fetch(API_BASE_URL + '/api/test-strips?page=' + page + '&limit=' + limit);
+    // if (!res?.ok) {
+    //   throw new Error('Unable to fetch the data!');
+    // }
+    // if (res?.status === 500) {
+    //   throw new InternalServerError('Something broke at our end !. We will fix shortly');
+    // }
+    // const data: TestStripSubmissionListResponse = await res.json();
+    // return data;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     throw new Error(

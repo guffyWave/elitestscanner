@@ -66,6 +66,8 @@ export const useTestStripSubmission = () => {
       .then((response: TestStripSubmissionListResponse | undefined) => {
         let submissionsList: TestStripSubmissionItem[] = [];
 
+        console.log('check response ---', response);
+
         response?.data.forEach((_submission) => {
           submissionsList.push({
             id: _submission?.id,
