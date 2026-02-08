@@ -37,7 +37,7 @@ const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = Re
 
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Your scan history NEW </Text>
+        <Text style={styles.title}>Your scan history Updated Port </Text>
 
         {isLoading && !testStripSubmissionItemList.length ? (
           <ActivityIndicator size={'large'} />

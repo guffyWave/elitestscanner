@@ -140,7 +140,7 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
         <View style={styles.cameraBoxContainer}>
           {true ? (
             <View style={styles.capturedBox}>
-              {!animationFinished ? (
+              {/* {!animationFinished ? (
                 <LottieView
                   //source={require('../animation/camera_pop_up.json')}
                   source={require('../animation/qr_scanning.json')}
@@ -149,7 +149,7 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
                   onAnimationFinish={() => setAnimationFinished(true)}
                   style={{ width: 200, height: 200, backgroundColor: theme.colors.BLACK }}
                 />
-              ) : null}
+              ) : null} */}
             </View>
           ) : null}
           {backCamera ? (
@@ -187,13 +187,13 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
         renderUploadResponseBox()
       ) : animationFinished ? (
         <View style={styles.userEducationBox}>
-          <LottieView
+          {/* <LottieView
             //source={require('../animation/camera_pop_up.json')}
             source={require('../animation/qr_scanning.json')}
             autoPlay
             loop={true}
             style={{ width: 100, height: 100, backgroundColor: theme.colors.BLACK }}
-          />
+          /> */}
         </View>
       ) : null}
     </View>

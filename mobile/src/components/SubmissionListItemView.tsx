@@ -17,10 +17,10 @@ const SubmissionListItemView: FC<SubmissionListItemViewProps> = React.memo(({ it
           Scale webp/png based on client  https://newassets.apollo247.com/images/banners/mweb_First3.jpg?imwidth=200
         */}
         <Image
-          // source={{ uri: API_BASE_URL + '/' + item?.thumbnail_path }}
-          source={{
-            uri: 'https://img.icons8.com/?size=100&id=42305&format=png&color=000000',
-          }}
+          source={{ uri: API_BASE_URL + '/' + item?.thumbnail_path }}
+          // source={{
+          //   uri: 'https://img.icons8.com/?size=100&id=42305&format=png&color=000000',
+          // }}
           style={styles.thumbnail}
         />
         <Text style={styles.status(item.status)}>{item.status}</Text>
