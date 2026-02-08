@@ -14,9 +14,9 @@ interface HomeScreenProps {
 const HomeScreen: FC<HomeScreenProps> = React.memo(({ params }) => {
   const [showHistory, setShowHistory] = useState<boolean>(false);
 
-  const onHistoryOrScannerToggled = useCallback(() => {
-    setShowHistory(!showHistory);
-  }, [showHistory]);
+  // const onHistoryOrScannerToggled = useCallback(() => {
+  //   setShowHistory(!showHistory);
+  // }, [showHistory]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -31,10 +31,10 @@ const HomeScreen: FC<HomeScreenProps> = React.memo(({ params }) => {
         <TouchableOpacity
           style={styles.secondaryButton}
           // @note unoptimised inline function , will cause render issue - convert into meoinised function
-          // onPress={() => {
-          //   setShowHistory(!showHistory);
-          // }}
-          onPress={onHistoryOrScannerToggled}
+          onPress={() => {
+            setShowHistory(!showHistory);
+          }}
+          //onPress={onHistoryOrScannerToggled}
         >
           <Text style={styles.buttonText}>
             {showHistory ? STRINGS.HOME.SCANNER : STRINGS.HOME.HISTORY}

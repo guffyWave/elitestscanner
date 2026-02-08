@@ -7,6 +7,7 @@ import {
   Alert,
   ActivityIndicator,
   ScrollView,
+  Platform,
 } from 'react-native';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
 import { Image } from 'react-native';
@@ -59,22 +60,6 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
       </ScrollView>
     );
   }, [uploadResponse]);
-
-  // if (!hasPermission) {
-  //   return (
-  //     <View style={styles.center}>
-  //       <Text>Please grant camera permission</Text>
-  //     </View>
-  //   );
-  // }
-
-  // if (!backCamera) {
-  //   return (
-  //     <View style={styles.center}>
-  //       <Text>This device does not support camera</Text>
-  //     </View>
-  //   );
-  // }
 
   const takePhoto = async () => {
     if (!cameraRef.current) return;
@@ -132,6 +117,8 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
 
   return (
     <View style={styles.captureContainer}>
+      {!hasPermission ? <Text>Please grant camera permission</Text> : null}
+
       {photo ? (
         <View style={styles.capturedBox}>
           <Image source={{ uri: photo }} style={styles.previewImage} />
@@ -140,7 +127,7 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
         <View style={styles.cameraBoxContainer}>
           {true ? (
             <View style={styles.capturedBox}>
-              {/* {!animationFinished ? (
+              {!animationFinished && Platform.OS === 'ios' ? (
                 <LottieView
                   //source={require('../animation/camera_pop_up.json')}
                   source={require('../animation/qr_scanning.json')}
@@ -149,7 +136,7 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
                   onAnimationFinish={() => setAnimationFinished(true)}
                   style={{ width: 200, height: 200, backgroundColor: theme.colors.BLACK }}
                 />
-              ) : null} */}
+              ) : null}
             </View>
           ) : null}
           {backCamera ? (
@@ -185,15 +172,15 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
       )}
       {uploadResponse ? (
         renderUploadResponseBox()
-      ) : animationFinished ? (
+      ) : animationFinished && Platform.OS === 'ios' ? (
         <View style={styles.userEducationBox}>
-          {/* <LottieView
+          <LottieView
             //source={require('../animation/camera_pop_up.json')}
             source={require('../animation/qr_scanning.json')}
             autoPlay
             loop={true}
             style={{ width: 100, height: 100, backgroundColor: theme.colors.BLACK }}
-          /> */}
+          />
         </View>
       ) : null}
     </View>
@@ -277,33 +264,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#e6e6e6',
     padding: 6,
     borderRadius: 8,
-    maxHeight: 135,
   },
   infoText: { fontSize: 18, marginVertical: 4 },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   statusText: (status: ScanValidity) => ({
-    fontSize: 10,
+    fontSize: 14,
     fontWeight: 'bold',
     marginVertical: 4,
     color: status === 'INVALID' ? '#FF0000' : status === 'VALID' ? '#2ECC71' : '#999999',
   }),
   qrCodeText: {
-    fontSize: 10,
+    fontSize: 12,
     marginVertical: 4,
     color: '#333',
   },
   qrCodeValidText: {
-    fontSize: 10,
+    fontSize: 12,
     marginVertical: 4,
     color: '#444',
   },
   qualityText: {
-    fontSize: 10,
+    fontSize: 12,
     marginVertical: 4,
     color: '#2b2929',
   },
   messageText: {
-    fontSize: 10,
     marginVertical: 4,
     color: '#666',
   },

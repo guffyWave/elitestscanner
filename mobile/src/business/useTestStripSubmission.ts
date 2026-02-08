@@ -55,6 +55,7 @@ const reducerFunction = (
 };
 
 export const useTestStripSubmission = () => {
+  // @note - Flux design patterns
   const [submissionsState, dispatch] = useReducer(reducerFunction, initialState);
 
   useDebugValue('Debug TestStripSubmission Hook');
