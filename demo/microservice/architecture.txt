@@ -1,0 +1,116 @@
+
+MICROSERVICES BREAKDOWN
+
+1. API Gateway / BFF (Backend for Frontend) (Tech stack - Express)
+-Input validation
+-Upload routing
+-Calling internal services
+
+
+2. Upload Service (Handles Image Upload)
+-Accept incoming uploads
+-Validate file  dimensions
+-Upload to cloud storage bucket (S3, GCP, Cloudflare R2)
+-Queue "process image" event → BullMQ ( or RabbitMQ / SQS)
+
+=> Returns submissionId immediately (fast response)
+
+
+
+3. Image Processing Service (GPU/CPU intensive) - Runs async jobs -(Horizontal scalable)
+
+
+-Sharp preprocessing
+-Rotate, crop, normalization
+-Compress  and generate thumbnail
+-QR/BAR code extraction (ZXing / MLKit / Vision API)
+-Assign ScanValidity, QRScanQuality
+
+=> Writes results to - 
+1.DB (TestStripSubmission)
+2.Cache (Redis)
+
+
+
+4. QR Validation Service (Optional )
+-Check QR correctness
+-Prevent duplicate QR submissions(Optional)
+-Apply business rules (expiration,)
+-Update status in DB
+
+
+
+5. Test Strip Results Service (Used by front end hits to load the history list.)
+
+-Fetching paginated lists of submissions
+-Query optimization
+-Redis caching
+-Mapping DB results → API response models
+
+
+6. CDN / Object Storage Service
+
+Stores:
+-Original uploaded images
+-Thumbnails
+-Logs
+-Metadata files
+
+=> Upload to GCS, Cloudflare R2 (fast + cheap) or S3.
+
+
+
+
+
+7. Notification Service (Optional)
+
+-Notification Push/email/SMS when:
+-Result processed
+-QR invalid
+-Expired test strip detected
+
+
+
+
+Microservices Communication Flow:
+
+
+
+ RN App
+
+   ↓
+
+[API Gateway]
+
+   ↓
+
+[Upload Service] --- uploads image ---> [CDN / R2]
+
+   ↓
+
+ puts job -->
+
+[Queue (RabbitMQ / SQS)]
+
+   ↓
+
+[Image Processing Service]
+
+   ↓
+
+ updates QR + result -->
+
+[QR Validation Service]
+
+   ↓
+
+ writes result -->
+
+[DB + Redis]
+
+   ↓
+
+[API Gateway returns status to user]
+
+
+

@@ -101,6 +101,7 @@ captures/
 !screenshots/app_two.png
 
 !demo/*.*
+!demo/microservice/*.*
 
 
 .Trash*
