@@ -19,21 +19,19 @@ AppRegistry.registerComponent(appName, () => App);
 
 //@note Improvement for Production release -
 /*
-        Lottie Animation - User Education, Gamification , Interaction Reward , Fun & Engaging experince  etc
+        Lottie Animation - User Education, Gamification , Interaction Reward , Fun & Engaging experience  etc
         
+        Offline capability - Realm , Redux-Saga or Tan Stack @tanstack/react-query
+
         Analytics  Framework Clevertap,Mixpanel,Firebase ,etc - funnel analysis on capture-upload-result
         
-        Add Firebase Crashlytics - for crashes & non-fatals
+        Add Firebase Crashlytics - for crashes & non-fatals, tech analytics
         
         Firebase Performance
         
         CDN Image scaling
         
         Firebase Remote Config for app level configs
-        
-        Network Info @react-native-community/netinfo for connectivity
-        
-        Offline capability - Realm , Redux-Saga
         
         Performance , RN Dev tools - report screenshot
         

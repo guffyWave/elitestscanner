@@ -25,6 +25,7 @@ interface ErrorViewProps {
 const ErrorView: FC<ErrorViewProps> = React.memo(({ message }) => {
   return (
     <View style={styles.container}>
+      {/* @note Show promising error animation  */}
       <Image src="https://img.icons8.com/color/96/error" style={styles.errorIcon} />
       <Text style={styles.message}>{message}</Text>
     </View>

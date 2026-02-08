@@ -22,3 +22,12 @@
 {"level":"info","message":"Image upload started - ","timestamp":"2026-02-08T06:25:43.732Z"}
 {"format":"png","height":1500,"level":"info","message":"Image processed:","size":822926,"thumbnailPath":"uploads/thumbnails/1770531943958_thumb.jpg","timestamp":"2026-02-08T06:25:44.003Z","width":1125}
 {"id":"c3fb3940-f692-4fe3-ad27-c288ed0efe2e","level":"info","message":"Image processed successfully No QR code was found in the image","processedAt":"2026-02-08T06:25:44.012Z","qrCode":null,"qrCodeValid":"INVALID","quality":"NA","status":"INVALID","timestamp":"2026-02-08T06:25:44.018Z"}
+{"level":"info","message":"Image upload started - ","timestamp":"2026-02-08T14:10:52.856Z"}
+{"format":"png","height":1500,"level":"info","message":"Image processed:","size":28751,"thumbnailPath":"uploads/thumbnails/1770559853344_thumb.jpg","timestamp":"2026-02-08T14:10:53.392Z","width":1500}
+{"id":"31313273-a9fa-4cfc-88f6-05fd93ff72dd","level":"info","message":"Image processed successfully The QR code is invalid or corrupted. Make sure it matches ELI-YYYY-XXX format","processedAt":"2026-02-08T14:10:53.410Z","qrCode":"Gufran","qrCodeValid":"INVALID","quality":"NA","status":"INVALID","timestamp":"2026-02-08T14:10:53.420Z"}
+{"level":"info","message":"Image upload started - ","timestamp":"2026-02-08T14:11:04.621Z"}
+{"format":"png","height":1500,"level":"info","message":"Image processed:","size":38754,"thumbnailPath":"uploads/thumbnails/1770559865036_thumb.jpg","timestamp":"2026-02-08T14:11:05.091Z","width":1500}
+{"id":"12a384be-e7bc-4c93-9fd6-4549d2bc68c7","level":"info","message":"Image processed successfully Test strip uploaded and processed successfully.","processedAt":"2026-02-08T14:11:05.101Z","qrCode":"ELI-2025-001","qrCodeValid":"VALID","quality":"GOOD","status":"VALID","timestamp":"2026-02-08T14:11:05.104Z"}
+{"level":"info","message":"Image upload started - ","timestamp":"2026-02-08T14:11:14.488Z"}
+{"format":"png","height":1500,"level":"info","message":"Image processed:","size":37757,"thumbnailPath":"uploads/thumbnails/1770559874806_thumb.jpg","timestamp":"2026-02-08T14:11:14.873Z","width":1500}
+{"id":"a8f71b49-ef49-4aa0-a7fd-7511e9fd0b69","level":"info","message":"Image processed successfully The QR code has expired","processedAt":"2026-02-08T14:11:14.874Z","qrCode":"ELI-2021-009","qrCodeValid":"EXPIRED","quality":"NA","status":"EXPIRED","timestamp":"2026-02-08T14:11:14.875Z"}
