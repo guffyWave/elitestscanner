@@ -8,11 +8,12 @@ import {
   ActivityIndicator,
   ScrollView,
   Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { Image } from 'react-native';
 import ImageResizer from 'react-native-image-resizer';
-import axios from 'axios';
 import LottieView from 'lottie-react-native';
 import { Dimensions } from 'react-native';
 import { UploadImageResponseModel } from '../model/testStripSubmissionList';
@@ -61,6 +62,8 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
     );
   }, [uploadResponse]);
 
+  // @note - Improve/educate user to capture image based on analytics funnel data -
+  // @note - Improve QR recognition to suggest upfornt user about image quality - Based on too many rejection
   const takePhoto = async () => {
     if (!cameraRef.current) return;
 
@@ -91,6 +94,58 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
     }
   };
 
+  const takeFromGallery = async () => {
+    console.log('check takeFromGallery ---');
+    setUploadResponse(null);
+
+    if (Platform.OS === 'android') {
+      try {
+        const permission =
+          Number(Platform.Version) >= 33
+            ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
+            : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
+
+        const granted = await PermissionsAndroid.request(permission, {
+          title: 'Gallery Permission',
+          message: 'App needs access to your gallery to select photos',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        });
+
+        console.log('check granted ---', granted);
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          return;
+        }
+      } catch (err) {
+        console.warn(err);
+        console.log('check err ---', err);
+      }
+    }
+
+    const result = await launchImageLibrary({ mediaType: 'photo', selectionLimit: 1 });
+
+    if (result.didCancel) return;
+    if (result.errorCode) {
+      Alert.alert('Error', result.errorMessage);
+      return;
+    }
+
+    if (result.assets && result.assets.length > 0 && result.assets[0].uri) {
+      const imageUri = result.assets[0].uri;
+      setPhoto(imageUri);
+
+      try {
+        const resized = await ImageResizer.createResizedImage(imageUri, 1500, 1500, 'PNG', 100);
+        setCompressedPhoto(resized.uri);
+      } catch (err) {
+        console.error('Image resize error', err);
+        Alert.alert('Error', 'Failed to compress image');
+      }
+    }
+  };
+
+  //@note -  Move this to Service layer
   const uploadPhoto = async () => {
     if (!compressedPhoto) return;
 
@@ -158,9 +213,14 @@ const QRScanner: FC<QRScannerProps> = React.memo(({ params }) => {
       {!compressedPhoto ? (
         <View>
           <Text style={styles.captureInstruction}>Capture your test strip QR Code Image </Text>
-          <TouchableOpacity style={styles.button} onPress={takePhoto}>
-            <Text style={styles.buttonText}>Capture</Text>
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity style={styles.button} onPress={takePhoto}>
+              <Text style={styles.buttonText}>Capture</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={takeFromGallery}>
+              <Text style={styles.buttonText}>Gallery</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       ) : (
         <View>
@@ -226,13 +286,8 @@ const styles = StyleSheet.create({
     margin: 16,
     backgroundColor: '#000',
   },
-
   userEducationBox: {
     width: 0.9 * DEVICE_WIDTH,
-    //height: 0.9 * DEVICE_WIDTH,
-    // borderWidth: 2,
-    // borderStyle: 'dashed',
-    // borderColor: '#999',
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',

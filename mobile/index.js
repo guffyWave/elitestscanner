@@ -17,14 +17,27 @@ AppRegistry.registerComponent(appName, () => App);
 // common - colors, themes, fonts, strings,dimens
 // model - TS models & interfaces
 
-//@note Changes for Production readiness -
-// Lottie Animation - User Education, Gamification , Interaction Reward etc
-// Analytics  Framework Clevertap,Mixpanel,Firebase ,etc - funnel analysis on capture-upload-result
-// Add Firebase Crashlytics - for crashes & non-fatals
-// Firebase Performance
-// CDN Image scaling
-// Firebase Remote Config for app level configs
-// Netwrok Info @react-native-community/netinfo for connectivity
-// Offline capability - Realm , Redux-Saga
-// Performance , RN Dev tools - report screenshot
-// Deeplink setup - eli - Universal  Link (https://eli.health/your-test-strips)  & URL (elihealth://your-test-strips )(Scheme AndroidManifest.xml & Info.plist
+//@note Improvement for Production release -
+/*
+        Lottie Animation - User Education, Gamification , Interaction Reward , Fun & Engaging experince  etc
+        
+        Analytics  Framework Clevertap,Mixpanel,Firebase ,etc - funnel analysis on capture-upload-result
+        
+        Add Firebase Crashlytics - for crashes & non-fatals
+        
+        Firebase Performance
+        
+        CDN Image scaling
+        
+        Firebase Remote Config for app level configs
+        
+        Network Info @react-native-community/netinfo for connectivity
+        
+        Offline capability - Realm , Redux-Saga
+        
+        Performance , RN Dev tools - report screenshot
+        
+        Deeplink setup - eli - Universal  Link (https://eli.health/your-test-strips)  & URL (elihealth://your-test-strips )(Scheme AndroidManifest.xml & Info.plist
+        
+        ESBuild for Tree-Shaking
+*/
