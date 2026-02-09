@@ -25,7 +25,7 @@ AppRegistry.registerComponent(appName, () => App);
 
         3. Analytics  Framework Clevertap,Mixpanel,Firebase ,etc - funnel analysis on capture-upload-result.  -- rn-bg-fetch / action  
         
-        4.Add Firebase Crashlytics - for crashes & non-fatals, tech analytics
+        4. Add Firebase Crashlytics - for crashes & non-fatals, tech analytics
         
         5. Firebase Performance
         
