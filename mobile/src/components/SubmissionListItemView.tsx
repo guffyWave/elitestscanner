@@ -15,6 +15,7 @@ const SubmissionListItemView: FC<SubmissionListItemViewProps> = React.memo(({ it
           Convert to FastImage  
           Better use SVG , WEBP, PNG
           Scale webp/png based on client  https://newassets.apollo247.com/images/banners/mweb_First3.jpg?imwidth=200
+          Progressive Image loading 
         */}
         <Image
           source={{ uri: API_BASE_URL + '/' + item?.thumbnail_path }}

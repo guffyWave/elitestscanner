@@ -34,6 +34,7 @@ const HomeScreen: FC<HomeScreenProps> = React.memo(({ params }) => {
           onPress={() => {
             setShowHistory(!showHistory);
           }}
+          //optimised 
           //onPress={onHistoryOrScannerToggled}
         >
           <Text style={styles.buttonText}>

@@ -1,3 +1,7 @@
+/////////////////////////////////////////////////
+/// See Type Relations ERD for better clarity
+/////////////////////////////////////////////////
+
 export interface TestStripSubmissionListResponse {
   data: TestStripSubmissionModel[];
   page: number;

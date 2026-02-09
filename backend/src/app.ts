@@ -55,7 +55,4 @@ export default app;
 
     7.DB Connection Pooling & Prisma Integration
 
-    8.
-
-
 */
