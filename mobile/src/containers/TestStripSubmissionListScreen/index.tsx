@@ -39,6 +39,7 @@ const TestStripSubmissionListScreen: FC<TestStripSubmissionListScreenProps> = Re
       <View style={styles.container}>
         <Text style={styles.title}>Your scan history Updated Port </Text>
 
+        {/* Improvement show Shimmer rather than empty loader  */}
         {isLoading && !testStripSubmissionItemList.length ? (
           <ActivityIndicator size={'large'} />
         ) : null}

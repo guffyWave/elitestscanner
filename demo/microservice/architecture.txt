@@ -1,5 +1,7 @@
 
+-------------------------
 MICROSERVICES BREAKDOWN
+--------------------------
 
 1. API Gateway / BFF (Backend for Frontend) (Tech stack - Express)
 -Input validation

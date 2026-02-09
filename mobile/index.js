@@ -23,7 +23,7 @@ AppRegistry.registerComponent(appName, () => App);
         
         Offline capability - Realm , Redux-Saga or Tan Stack @tanstack/react-query
 
-        Analytics  Framework Clevertap,Mixpanel,Firebase ,etc - funnel analysis on capture-upload-result
+        Analytics  Framework Clevertap,Mixpanel,Firebase ,etc - funnel analysis on capture-upload-result.  -- rn-bg-fetch / action  
         
         Add Firebase Crashlytics - for crashes & non-fatals, tech analytics
         

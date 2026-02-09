@@ -34,37 +34,28 @@ export default app;
 
 //
 
-//Improvements -
-//Use testStripsRoutes GraphQL endpoint  - '@apollo/server typeDef resolver Mutation/Query' for many small queries,  api is complex and expanding
-// Use Rate limiting with testStripsRoutes express-rate-limit , fastify-rate-limit , Nginx rate-limiting
-//Async Logging
-//Redis cache  - caching
-//Payload compression
-//Connection pool
+/* Improvements -
+    1.File upload to CDN GCS/ Akamai
+        GCS Bucket - @google-cloud/storage  'elihealth-test-strips-uploads'
+        bucket.upload
+        await bucket.file(destination).makePublic();
+        
+    2.Redis Caching at Service Layer -  testStrips.service
 
-//TOON over JSON
+    3.Rate limiting -
+        Use Rate limiting with testStripsRoutes express-rate-limit , fastify-rate-limit , Nginx rate-limiting
 
-/*
-File upload to CDN GCS/ Akamai
-GCS Bucket - @google-cloud/storage  'elihealth-test-strips-uploads'
-bucket.upload
-await bucket.file(destination).makePublic();
-*/
+    4.Microservice over Monolith Architecture  
+        Horizontal scaling may not be scalable 
+    
+    5.GraphQL endpoint for testStripsRoutes for customisable queries 
+        Use testStripsRoutes GraphQL endpoint  - '@apollo/server typeDef resolver Mutation/Query' for many small queries,  api is complex and expanding
 
-/* Monolith Architecture 
- Horizontal scaling - add more server --- one module downs , downs other module
-*/
+    6.Payload compression
 
-/*
-Microservice architecture - folder structure 
- /microservices
-    /api-gateway   --->  axios.post("http://qr-service:4001/scan",{ filePath });
-    /qr-service  --> endpoint '/scan' --> QRService.extractQR(filePath);
-    /db-service
-    /image-service
+    7.DB Connection Pooling & Prisma Integration
 
-    Each microservice will have:
-    Dockerfile
-    src/
-    package.json
+    8.
+
+
 */

@@ -47,7 +47,7 @@ export async function uploadTestStrip(
     //BullMQ Worker will picks job -> sends data to Worker Thread //  { Worker } = require("bullmq")  { Worker: ThreadWorker } = require("worker_threads") worker.postMessage(data);
     //Worker Thread doing actual CPU-heavy work  //  { parentPort } = require("worker_threads") parentPort.on("message", ({ para }) => { //.... parentPort.postMessage(result)});
     //result will returned and stored in Redis  // queue.getJob(jobId).result
-    // return result as GCM , webSockets or polling to user 
+    // return result as GCM , webSockets or polling to user
 
     //QR Extraction
     qrScanResult = await QRService.extractQR(filePath);
@@ -97,7 +97,7 @@ export async function uploadTestStrip(
   }
 }
 
-//@note Improvement - Use testStripsRoutes GraphQL endpoint
+//@note Alternatively - Use testStripsRoutes GraphQL endpoint
 // 1. '@apollo/server typeDef resolver Mutation/Query' for many small queries,  api is complex and expanding
 //2. Use Rate limiting with testStripsRoutes express-rate-limit , fastify-rate-limit , Nginx rate-limiting
 //3. Redis Cache // new Redis({host,port});
