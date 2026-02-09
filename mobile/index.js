@@ -19,23 +19,23 @@ AppRegistry.registerComponent(appName, () => App);
 
 //@note Improvement for Production release -
 /*
-        Lottie Animation - User Education, Gamification , Interaction Reward , Fun & Engaging experience  etc
+        1. Lottie Animation - User Education, Gamification , Interaction Reward , Fun & Engaging experience  etc
         
-        Offline capability - Realm , Redux-Saga or Tan Stack @tanstack/react-query
+        2. Offline capability - Realm , Redux-Saga or Tan Stack @tanstack/react-query
 
-        Analytics  Framework Clevertap,Mixpanel,Firebase ,etc - funnel analysis on capture-upload-result.  -- rn-bg-fetch / action  
+        3. Analytics  Framework Clevertap,Mixpanel,Firebase ,etc - funnel analysis on capture-upload-result.  -- rn-bg-fetch / action  
         
-        Add Firebase Crashlytics - for crashes & non-fatals, tech analytics
+        4.Add Firebase Crashlytics - for crashes & non-fatals, tech analytics
         
-        Firebase Performance
+        5. Firebase Performance
         
-        CDN Image scaling
+        6.CDN Image scaling
         
-        Firebase Remote Config for app level configs
+        7.Firebase Remote Config for app level configs
         
-        Performance , RN Dev tools - report screenshot
+        8. Performance , RN Dev tools - report screenshot
         
-        Deeplink setup - eli - Universal  Link (https://eli.health/your-test-strips)  & URL (elihealth://your-test-strips )(Scheme AndroidManifest.xml & Info.plist
+        9.Deeplink setup - eli - Universal  Link (https://eli.health/your-test-strips)  & URL (elihealth://your-test-strips )(Scheme AndroidManifest.xml & Info.plist
         
-        ESBuild for Tree-Shaking
+        10. ESBuild for Tree-Shaking
 */

@@ -34,7 +34,7 @@ MICROSERVICES BREAKDOWN
 
 
 
-4. QR Validation Service (Optional )
+4. QR Validation Service (Optional)
 -Check QR correctness
 -Prevent duplicate QR submissions(Optional)
 -Apply business rules (expiration,)

@@ -37,8 +37,8 @@ export default app;
 /* Improvements -
     1.File upload to CDN GCS/ Akamai
         GCS Bucket - @google-cloud/storage  'elihealth-test-strips-uploads'
-        bucket.upload
-        await bucket.file(destination).makePublic();
+        
+        bucket.upload await bucket.file(destination).makePublic();
         
     2.Redis Caching at Service Layer -  testStrips.service
 
